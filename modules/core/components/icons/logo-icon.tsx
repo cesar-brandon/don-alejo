@@ -1,4 +1,4 @@
-export default function LogoIcon() {
+export default function LogoIcon({ ...props }: React.ComponentProps<"svg">) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -6,6 +6,7 @@ export default function LogoIcon() {
       height="1080"
       viewBox="0 0 1080 1080"
       fill="none"
+      {...props}
     >
       <g clipPath="url(#clip0_2_2)">
         <path

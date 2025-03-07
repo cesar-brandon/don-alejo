@@ -25,13 +25,13 @@ export default function HeroSection() {
           height={200}
           className="mx-auto mb-8 rounded-full border-4 border-amber-200"
         />
-        <h1 className="text-5xl md:text-6xl font-bold mb-4 font-serif">
+        <h1 className="text-5xl md:text-6xl font-bold mb-4  ">
           Sabores de Abuela
         </h1>
         <p className="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">
           Donde los sabores de Chincha se mezclan con el amor de la abuela
         </p>
-        <button className="bg-amber-600 text-white font-semibold py-3 px-8 rounded-full text-lg hover:bg-amber-700 transition-colors duration-300 shadow-lg">
+        <button className="bg-secondary text-secondary-foreground font-semibold py-3 px-8 rounded-full text-lg hover:bg-secondary/80 transition-colors duration-300 shadow-lg">
           Reserva Ahora
         </button>
       </div>

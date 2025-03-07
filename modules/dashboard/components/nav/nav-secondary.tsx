@@ -1,5 +1,5 @@
 import * as React from "react";
-import { type LucideIcon } from "lucide-react";
+import { Moon, Sun, type LucideIcon } from "lucide-react";
 
 import {
   SidebarGroup,
@@ -8,6 +8,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { Button } from "@/modules/core/components/ui/button";
+import { useTheme } from "next-themes";
 
 export function NavSecondary({
   items,
@@ -19,6 +21,8 @@ export function NavSecondary({
     icon: LucideIcon;
   }[];
 } & React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
+  const { theme, setTheme } = useTheme();
+
   return (
     <SidebarGroup {...props}>
       <SidebarGroupContent>
@@ -33,6 +37,18 @@ export function NavSecondary({
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
+          <SidebarMenuItem key="dark-mode">
+            <SidebarMenuButton asChild size="sm">
+              <Button
+                className="justify-start has-[>svg]:px-2"
+                variant="ghost"
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              >
+                {theme === "dark" ? <Sun /> : <Moon />}
+                Modo {theme === "dark" ? "claro" : "oscuro"}
+              </Button>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>
