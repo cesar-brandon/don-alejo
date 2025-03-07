@@ -4,18 +4,31 @@ import { Button } from "@/modules/core/components/ui/button";
 import { Input } from "@/modules/core/components/ui/input";
 import { Label } from "@/modules/core/components/ui/label";
 import { cn } from "@/modules/core/lib/utils";
-import { Eye } from "lucide-react";
+import { Eye, Loader2 } from "lucide-react";
 import { useState } from "react";
-import { login } from "../actions/login";
+import { useLogin } from "../hook/userLogin";
+import { redirect } from "next/navigation";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"form">) {
   const [visible, setVisible] = useState(false);
+  const [, loginAction, loginPending] = useLogin();
+
+  const handleSubmit = async (formData: FormData) => {
+    await loginAction(formData);
+    if (!loginPending) {
+      redirect("/dashboard");
+    }
+  };
 
   return (
-    <form className={cn("flex flex-col gap-6", className)} {...props}>
+    <form
+      className={cn("flex flex-col gap-6", className)}
+      action={handleSubmit}
+      {...props}
+    >
       <div className="flex flex-col items-center gap-2 text-center">
         <h1 className="text-2xl font-bold">Inicia sesión en tu cuenta</h1>
         <p className="text-balance text-sm text-muted-foreground">
@@ -55,8 +68,9 @@ export function LoginForm({
             </Button>
           </div>
         </div>
-        <Button type="submit" className="w-full" formAction={login}>
+        <Button type="submit" className="w-full" disabled={loginPending}>
           Iniciar Sesión
+          {loginPending && <Loader2 className="w-6 h-6 animate-spin" />}
         </Button>
         <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
           <span className="relative z-10 bg-background px-2 text-muted-foreground">

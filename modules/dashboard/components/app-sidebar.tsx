@@ -23,6 +23,7 @@ import { NavMain } from "./nav/nav-main";
 import { NavSecondary } from "./nav/nav-secondary";
 import { NavUser } from "./nav/nav-user";
 import LogoIcon from "@/modules/core/components/icons/logo-icon";
+import Link from "next/link";
 
 const data = {
   user: {
@@ -33,25 +34,25 @@ const data = {
   navMain: [
     {
       title: "Configuración",
-      url: "#",
+      url: "/configuracion/menu",
       icon: Settings,
       isActive: true,
       items: [
         {
-          title: "Inventario",
-          url: "#",
+          title: "Categorías",
+          url: "/dashboard/configuracion/categorias",
+        },
+        {
+          title: "Menú",
+          url: "/dashboard/configuracion/menu",
         },
         {
           title: "Roles",
-          url: "#",
+          url: "/dashboard/configuracion/roles",
         },
         {
           title: "Usuarios",
-          url: "#",
-        },
-        {
-          title: "Clientes",
-          url: "#",
+          url: "/dashboard/configuracion/usuarios",
         },
       ],
     },
@@ -61,15 +62,7 @@ const data = {
       icon: HandPlatter,
       items: [
         {
-          title: "Orders",
-          url: "#",
-        },
-        {
-          title: "Payments",
-          url: "#",
-        },
-        {
-          title: "Refunds",
+          title: "Gestión de Pedidos",
           url: "#",
         },
       ],
@@ -80,22 +73,22 @@ const data = {
       icon: Utensils,
       items: [
         {
-          title: "Platos",
+          title: "Pedidos",
           url: "#",
         },
       ],
     },
-    {
-      title: "Reportes",
-      url: "#",
-      icon: SquareChartGantt,
-      items: [
-        {
-          title: "Ventas",
-          url: "#",
-        },
-      ],
-    },
+    // {
+    //   title: "Reportes",
+    //   url: "#",
+    //   icon: SquareChartGantt,
+    //   items: [
+    //     {
+    //       title: "Ventas",
+    //       url: "#",
+    //     },
+    //   ],
+    // },
   ],
   navSecondary: [],
   projects: [
@@ -124,7 +117,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <a href="#">
+              <Link href="/dashboard">
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground overflow-hidden">
                   <LogoIcon />
                 </div>
@@ -132,7 +125,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <span className="truncate font-semibold">Don Alejo</span>
                   <span className="truncate text-xs">donalejo.com</span>
                 </div>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

@@ -2,9 +2,9 @@
 
 import { createClient } from "@/modules/core/lib/supabase/server";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";;
+import { ActionState } from "../type/action-state";
 
-export async function login(formData: FormData) {
+export async function login(actionState: ActionState, formData: FormData) {
   const supabase = await createClient();
 
   // type-casting here for convenience
@@ -17,15 +17,14 @@ export async function login(formData: FormData) {
   const { error } = await supabase.auth.signInWithPassword(data);
 
   if (error) {
-    console.error(error);
-    // redirect("/error");
+    return toActionState("Error al iniciar sesión", "ERROR");
   }
 
   revalidatePath("/dashboard", "layout");
-  redirect("/dashboard");
+  return toActionState("Iniciaste sesión correctamente", "SUCCESS");
 }
 
-export async function signup(formData: FormData) {
+export async function signup(actionState: ActionState, formData: FormData) {
   const supabase = await createClient();
 
   // type-casting here for convenience
@@ -38,9 +37,16 @@ export async function signup(formData: FormData) {
   const { error } = await supabase.auth.signUp(data);
 
   if (error) {
-    redirect("/error");
+    return toActionState("Error al registrarse", "ERROR");
   }
 
   revalidatePath("/", "layout");
-  redirect("/");
+  return toActionState("Registrado correctamente", "SUCCESS");
 }
+
+const toActionState = (
+  message: string,
+  status: "SUCCESS" | "ERROR"
+): ActionState => {
+  return { message, status };
+};
