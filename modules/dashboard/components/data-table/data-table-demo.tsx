@@ -197,7 +197,7 @@ export function DataTableDemo() {
 
   return (
     <div className="w-full">
-      <div className="w-full flex items-center py-4">
+      <div className="w-full flex items-center py-4 gap-2">
         <Input
           placeholder="Filter emails..."
           value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}

@@ -37,7 +37,7 @@ export default async function RootLayout({
             <BreadcrumbMain />
           </div>
         </header>
-        <div className="flex flex-1 p-4 pt-0">{children}</div>
+        <div className="p-4 pt-0">{children}</div>
       </SidebarInset>
     </SidebarProvider>
   );
