@@ -2,20 +2,13 @@ import { createClient } from "@/modules/core/lib/supabase/server";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { AppSidebar } from "@/modules/dashboard/components/app-sidebar";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/modules/core/components/ui/breadcrumb";
 import { Separator } from "@/modules/core/components/ui/separator";
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
 } from "@/modules/core/components/ui/sidebar";
+import BreadcrumbMain from "@/modules/dashboard/components/breadcrumb-main";
 
 export const metadata: Metadata = {
   title: "Sistema",
@@ -41,19 +34,7 @@ export default async function RootLayout({
           <div className="flex items-center gap-2 px-4">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4" />
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="#">
-                    Building Your Application
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator className="hidden md:block" />
-                <BreadcrumbItem>
-                  <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
+            <BreadcrumbMain />
           </div>
         </header>
         <div className="flex flex-1 p-4 pt-0">{children}</div>

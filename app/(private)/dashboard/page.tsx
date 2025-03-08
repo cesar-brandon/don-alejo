@@ -1,5 +1,6 @@
 import { BarChartMultiple } from "@/modules/auth/components/chart/bar-chart-multiple";
 import { RadialChatText } from "@/modules/auth/components/chart/radial-chart-text";
+import { Skeleton } from "@/modules/core/components/ui/skeleton";
 
 export default function Page() {
   return (
@@ -7,9 +8,9 @@ export default function Page() {
       <div className="grid auto-rows-min gap-4 md:grid-cols-3">
         <RadialChatText />
         <BarChartMultiple />
-        <div className="w-full h-full aspect-video rounded-xl bg-muted/50" />
+        <Skeleton />
       </div>
-      <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
+      <Skeleton className="h-full" />
     </div>
   );
 }
