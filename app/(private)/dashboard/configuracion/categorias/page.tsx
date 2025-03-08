@@ -1,5 +1,5 @@
 import CategoryForm from "@/modules/configuration/components/category/form";
-import { DataTableDemo } from "@/modules/dashboard/components/data-table/data-table-demo";
+import { DataTableCategorias } from "@/modules/dashboard/components/data-table/data-table-demo";
 
 export default function CategoryPage() {
   return (
@@ -13,7 +13,7 @@ export default function CategoryPage() {
           <CategoryForm />
         </div>
       </div>
-      <DataTableDemo />
+      <DataTableCategorias />
     </div>
   );
 }

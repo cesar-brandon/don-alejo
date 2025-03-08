@@ -37,15 +37,15 @@ export default function CategoryForm({
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button variant="secondary">
-            Agregar
+            Agregar Categoría
             <Plus />
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Edit profile</DialogTitle>
+            <DialogTitle>Agregar/Editar Categoría</DialogTitle>
             <DialogDescription>
-              Make changes to your profile here. Click save when you're done.
+              Completa los campos y guarda los cambios.
             </DialogDescription>
           </DialogHeader>
           <Form />
@@ -58,21 +58,21 @@ export default function CategoryForm({
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button variant="secondary">
-          Agregar
+          Agregar Categoría
           <Plus />
         </Button>
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader className="text-left">
-          <DrawerTitle>Edit profile</DrawerTitle>
+          <DrawerTitle>Agregar/Editar Categoría</DrawerTitle>
           <DrawerDescription>
-            Make changes to your profile here. Click save when you're done.
+            Completa los campos y guarda los cambios.
           </DrawerDescription>
         </DrawerHeader>
         <Form className="px-4" />
         <DrawerFooter className="pt-2">
           <DrawerClose asChild>
-            <Button variant="outline">Cancel</Button>
+            <Button variant="outline">Cancelar</Button>
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>
@@ -84,14 +84,18 @@ function Form({ className }: React.ComponentProps<"form">) {
   return (
     <form className={cn("grid items-start gap-4", className)}>
       <div className="grid gap-2">
-        <Label htmlFor="email">Email</Label>
-        <Input type="email" id="email" defaultValue="shadcn@example.com" />
+        <Label htmlFor="nombre">Nombre de la Categoría</Label>
+        <Input type="text" id="nombre" placeholder="Ej. Entradas" />
       </div>
       <div className="grid gap-2">
-        <Label htmlFor="username">Username</Label>
-        <Input id="username" defaultValue="@shadcn" />
+        <Label htmlFor="descripcion">Descripción</Label>
+        <Input
+          type="text"
+          id="descripcion"
+          placeholder="Ej. Platos ligeros para comenzar"
+        />
       </div>
-      <Button type="submit">Save changes</Button>
+      <Button type="submit">Guardar Categoría</Button>
     </form>
   );
 }
