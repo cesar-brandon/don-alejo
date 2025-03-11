@@ -30,7 +30,7 @@ export default function HeroSection() {
         {/* </p> */}
         <Link href="/login">
           <button className="bg-secondary text-secondary-foreground font-semibold py-3 px-8 rounded-full text-lg hover:bg-secondary/80 transition-colors duration-300 shadow-lg">
-            Iniciar Sesión
+            Ingresar
           </button>
         </Link>
       </div>

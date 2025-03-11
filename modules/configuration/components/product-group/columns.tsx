@@ -1,9 +1,10 @@
 import * as React from "react";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, Trash2 } from "lucide-react";
+import { ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tables } from "@/modules/core/types/database.types";
 import ProductGroupForm from "./form";
+import DeleteConfirmationDialog from "../delete-confirmation-dialog";
 
 export const productGroupColumns: ColumnDef<Tables<"product_group">>[] = [
   {
@@ -60,9 +61,7 @@ export const productGroupColumns: ColumnDef<Tables<"product_group">>[] = [
       return (
         <div className="flex items-center p-2 gap-2">
           <ProductGroupForm id={item.id} item={item} />
-          <Button variant="outline" size="icon">
-            <Trash2 />
-          </Button>
+          <DeleteConfirmationDialog id={item.id} />
         </div>
       );
     },

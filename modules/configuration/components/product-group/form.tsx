@@ -62,7 +62,7 @@ export default function ProductGroupForm({
               Completa los campos y guarda los cambios.
             </DialogDescription>
           </DialogHeader>
-          <Form item={item} />
+          <Form item={item} setOpen={setOpen} />
         </DialogContent>
       </Dialog>
     );
@@ -89,7 +89,7 @@ export default function ProductGroupForm({
             Completa los campos y guarda los cambios.
           </DrawerDescription>
         </DrawerHeader>
-        <Form className="px-4" item={item} />
+        <Form className="px-4" item={item} setOpen={setOpen} />
         <DrawerFooter className="pt-2">
           <DrawerClose asChild>
             <Button variant="outline">Cancelar</Button>
@@ -103,31 +103,61 @@ export default function ProductGroupForm({
 function Form({
   className,
   item,
+  setOpen,
 }: {
   className?: string;
   item?: Tables<"product_group">;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const queyClient = useQueryClient();
+  const queryClient = useQueryClient();
+  const [formData, setFormData] = useState({
+    name: item?.name || "",
+    description: item?.description || "",
+  });
 
   const { mutate, isPending } = useMutation({
-    mutationFn: async (formData: FormData) => {
+    mutationFn: async (formData: { name: string; description: string }) => {
       const supabase = createClient();
-      if (item && item.id) {
-        const { data } = await supabase.auth.getUser();
-        // formData.append("user_upd", data.user?.id);
-        formData.append("updated_at", new Date().toISOString());
-        await supabase.from("product_group").update(formData).eq("id", item.id);
-      } else {
-        await supabase.from("product_group").insert(formData);
+      if (!item) {
+        return await supabase.from("product_group").insert(formData);
+      }
+      if (item.id) {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
+        const updateData = {
+          ...formData,
+          user_upd: user?.id ?? "",
+          updated_at: new Date().toISOString(),
+        };
+        await supabase
+          .from("product_group")
+          .update(updateData)
+          .eq("id", item.id);
       }
     },
     onSuccess: () => {
-      queyClient.invalidateQueries({ queryKey: ["product_group"] });
+      queryClient.invalidateQueries({ queryKey: ["product_group"] });
+      setOpen(false);
     },
   });
 
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
   return (
-    <form action={mutate} className={cn("grid items-start gap-4", className)}>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        mutate(formData);
+      }}
+      className={cn("grid items-start gap-4", className)}
+    >
       <div className="grid gap-2">
         <Label htmlFor="name">Nombre del grupo</Label>
         <Input
@@ -135,7 +165,8 @@ function Form({
           id="name"
           name="name"
           placeholder="Ej. Entradas"
-          value={item?.name || ""}
+          value={formData.name}
+          onChange={handleChange}
         />
       </div>
       <div className="grid gap-2">
@@ -144,7 +175,8 @@ function Form({
           id="description"
           name="description"
           placeholder="Ej. Platos ligeros para comenzar"
-          value={item?.description || ""}
+          value={formData.description}
+          onChange={handleChange}
         />
       </div>
       <Button type="submit" isLoading={isPending}>
