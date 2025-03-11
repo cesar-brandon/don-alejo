@@ -16,7 +16,7 @@ export default function HeroSection() {
 
       <div className="relative z-10 text-center text-white px-4">
         <Image
-          src="/images/logo.jpg"
+          src="/logo/logo.jpg"
           alt="Sabores de Abuela Logo"
           width={200}
           height={200}

@@ -2,7 +2,7 @@ import { LoginForm } from "@/modules/auth/components/login-form";
 import LogoIcon from "@/modules/core/components/icons/logo-icon";
 import Link from "next/link";
 
-export default function LoginPage() {
+export default async function LoginPage() {
   return (
     <div className="grid min-h-svh lg:grid-cols-2 bg-background">
       <div className="flex flex-col gap-4 p-6 md:p-10">

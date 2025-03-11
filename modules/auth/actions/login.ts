@@ -25,6 +25,22 @@ export async function login(actionState: ActionState, formData: FormData) {
   return toActionState("Iniciaste sesión correctamente", "SUCCESS");
 }
 
+export async function googleLogin() {
+  const supabase = await createClient();
+
+  try {
+    supabase.auth.signInWithOAuth({
+      provider: "google",
+    });
+
+    revalidatePath("/dashboard", "layout");
+    return toActionState("Iniciaste sesión correctamente", "SUCCESS");
+  } catch (error) {
+    console.error(error);
+    return toActionState("Error al iniciar sesión", "ERROR");
+  }
+}
+
 export async function signup(actionState: ActionState, formData: FormData) {
   const supabase = await createClient();
 
