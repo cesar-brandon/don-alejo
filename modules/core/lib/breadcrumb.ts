@@ -6,8 +6,9 @@ import {
   Settings,
   Utensils,
 } from "lucide-react";
+import { NavData, NavItem } from "../types/nav";
 
-export const navData = {
+export const navData: NavData = {
   user: {
     name: "shadcn",
     email: "m@example.com",
@@ -21,8 +22,8 @@ export const navData = {
       isActive: true,
       items: [
         {
-          title: "Categorías",
-          url: "/dashboard/configuracion/categorias",
+          title: "Grupos",
+          url: "/dashboard/configuracion/grupos",
         },
         {
           title: "Menú",
@@ -92,15 +93,17 @@ export const navData = {
   ],
 };
 
-export const generateRouteMap = (navMain: any[]) => {
-  const map: { [key: string]: any } = {};
-  navMain.forEach((item: { url: string; title: any; items: any[] }) => {
+export const generateRouteMap = (
+  navMain: NavItem[],
+): { [key: string]: string } => {
+  const map: { [key: string]: string } = {};
+  navMain.forEach((item: NavItem) => {
     const key = item.url.split("/").pop();
     if (key) {
       map[key] = item.title;
     }
     if (item.items) {
-      item.items.forEach((subItem: { url: string; title: any }) => {
+      item.items.forEach((subItem: NavItem) => {
         const subKey = subItem.url.split("/").pop();
         if (subKey) {
           map[subKey] = subItem.title;

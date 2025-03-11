@@ -1,4 +1,4 @@
-import { ActionState } from "../type/action-state";
+import { ActionState } from "../types/action-state";
 
 type Callback<T, R = unknown> = {
   onStart?: () => R;
@@ -10,10 +10,10 @@ type Callback<T, R = unknown> = {
 export const withCallbacks = <
   Args extends unknown[],
   T extends ActionState,
-  R = unknown
+  R = unknown,
 >(
   fn: (...args: Args) => Promise<T>,
-  callbacks: Callback<T, R>
+  callbacks: Callback<T, R>,
 ) => {
   return async (...args: Args) => {
     const promise = fn(...args);
@@ -35,4 +35,11 @@ export const withCallbacks = <
 
     return promise;
   };
+};
+
+export const toActionState = (
+  message: string,
+  status: "SUCCESS" | "ERROR",
+): ActionState => {
+  return { message, status };
 };

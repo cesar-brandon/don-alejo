@@ -15,7 +15,7 @@ import { NavSecondary } from "./nav/nav-secondary";
 import { NavUser } from "./nav/nav-user";
 import LogoIcon from "@/modules/core/components/icons/logo-icon";
 import Link from "next/link";
-import { navData } from "../utils/breadcrumb";
+import { navData } from "../lib/breadcrumb";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (

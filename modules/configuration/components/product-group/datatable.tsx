@@ -1,8 +1,7 @@
 "use client";
 
-import * as React from "react";
+import { useState } from "react";
 import {
-  ColumnDef,
   ColumnFiltersState,
   SortingState,
   VisibilityState,
@@ -13,17 +12,13 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
@@ -35,114 +30,29 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Tables } from "@/modules/core/types/database.types";
+import { productGroupColumns } from "./columns";
 
-const data: CategoriaPlato[] = [
-  {
-    id: "1",
-    nombre: "Entradas",
-    descripcion: "Platos ligeros para comenzar la comida",
-  },
-  {
-    id: "2",
-    nombre: "Platos fuertes",
-    descripcion: "Platos principales con carnes, aves o pescados",
-  },
-  {
-    id: "3",
-    nombre: "Postres",
-    descripcion: "Dulces y postres para finalizar la comida",
-  },
-  {
-    id: "4",
-    nombre: "Bebidas",
-    descripcion: "Bebidas frías y calientes para acompañar",
-  },
-];
-
-export type CategoriaPlato = {
-  id: string;
-  nombre: string;
-  descripcion: string;
+const columnLabels: { [key: string]: string } = {
+  name: "Nombre",
+  description: "Descripción",
+  created_at: "Fecha de creación",
 };
 
-export const columns: ColumnDef<CategoriaPlato>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "nombre",
-    header: "Nombre",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("nombre")}</div>
-    ),
-  },
-  {
-    accessorKey: "descripcion",
-    header: "Descripción",
-    cell: ({ row }) => <div>{row.getValue("descripcion")}</div>,
-  },
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      const categoria = row.original;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(categoria.id)}
-            >
-              Copiar ID de categoría
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Editar categoría</DropdownMenuItem>
-            <DropdownMenuItem>Eliminar categoría</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
-];
-
-export function DataTableCategorias() {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
+export function ProductGroupDataTable({
+  data,
+}: {
+  data: Tables<"product_group">[];
+}) {
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = useState({});
+  const [globalFilter, setGlobalFilter] = useState("");
 
   const table = useReactTable({
     data,
-    columns,
+    columns: productGroupColumns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -151,29 +61,29 @@ export function DataTableCategorias() {
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    onGlobalFilterChange: setGlobalFilter,
     state: {
       sorting,
       columnFilters,
       columnVisibility,
       rowSelection,
+      globalFilter,
     },
   });
 
   return (
     <div className="w-full">
-      <div className="w-full flex items-center py-4 gap-2">
+      <div className="flex items-center py-4">
         <Input
-          placeholder="Filtrar categorías..."
-          value={(table.getColumn("nombre")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("nombre")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
+          placeholder="Buscar por palabra clave"
+          value={globalFilter ?? ""}
+          onChange={(event) => setGlobalFilter(event.currentTarget.value ?? "")}
+          className="max-w-sm py-6"
         />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
-              Columnas <ChevronDown />
+              Columnas <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -190,7 +100,7 @@ export function DataTableCategorias() {
                       column.toggleVisibility(!!value)
                     }
                   >
-                    {column.id}
+                    {columnLabels[column.id] ?? column.id}
                   </DropdownMenuCheckboxItem>
                 );
               })}
@@ -209,7 +119,7 @@ export function DataTableCategorias() {
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                     </TableHead>
                   );
@@ -220,12 +130,15 @@ export function DataTableCategorias() {
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id}>
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}
@@ -234,10 +147,10 @@ export function DataTableCategorias() {
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length}
+                  colSpan={productGroupColumns.length}
                   className="h-24 text-center"
                 >
-                  No hay resultados.
+                  No results.
                 </TableCell>
               </TableRow>
             )}
@@ -246,8 +159,7 @@ export function DataTableCategorias() {
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
+          {table.getFilteredRowModel().rows.length} filas cargadas
         </div>
         <div className="space-x-2">
           <Button
@@ -256,7 +168,7 @@ export function DataTableCategorias() {
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            Previous
+            Anterior
           </Button>
           <Button
             variant="outline"
@@ -264,7 +176,7 @@ export function DataTableCategorias() {
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            Next
+            Siguiente
           </Button>
         </div>
       </div>

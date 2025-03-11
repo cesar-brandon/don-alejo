@@ -1,8 +1,12 @@
+"use client";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { TailwindIndicator } from "./tailwind-indicator";
 import { ThemeProvider } from "./theme-provider";
 import { Toaster } from "./ui/sonner";
 
-export default function Provider({ children }: React.PropsWithChildren<{}>) {
+const queryClient = new QueryClient();
+
+export default function Provider({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider
       attribute="class"
@@ -10,7 +14,7 @@ export default function Provider({ children }: React.PropsWithChildren<{}>) {
       enableSystem
       disableTransitionOnChange
     >
-      {children}
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
       <Toaster richColors />
       <TailwindIndicator />
     </ThemeProvider>

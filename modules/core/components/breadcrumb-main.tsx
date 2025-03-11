@@ -9,15 +9,15 @@ import {
   BreadcrumbSeparator,
 } from "@/modules/core/components/ui/breadcrumb";
 import { usePathname } from "next/navigation";
-import { generateRouteMap, navData } from "../utils/breadcrumb";
+import { generateRouteMap, navData } from "../lib/breadcrumb";
 
 export default function BreadcrumbMain(
-  props: React.ComponentProps<typeof Breadcrumb>
+  props: React.ComponentProps<typeof Breadcrumb>,
 ) {
   const paths = usePathname();
   const pathNames = useMemo(
     () => paths.split("/").filter((path) => path),
-    [paths]
+    [paths],
   );
 
   const routeMap = generateRouteMap(navData.navMain);

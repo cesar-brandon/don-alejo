@@ -2,7 +2,8 @@
 
 import { createClient } from "@/modules/core/lib/supabase/server";
 import { revalidatePath } from "next/cache";
-import { ActionState } from "../type/action-state";
+import { ActionState } from "../../core/types/action-state";
+import { toActionState } from "@/modules/core/lib/callbacks";
 
 export async function login(actionState: ActionState, formData: FormData) {
   const supabase = await createClient();
@@ -43,10 +44,3 @@ export async function signup(actionState: ActionState, formData: FormData) {
   revalidatePath("/", "layout");
   return toActionState("Registrado correctamente", "SUCCESS");
 }
-
-const toActionState = (
-  message: string,
-  status: "SUCCESS" | "ERROR"
-): ActionState => {
-  return { message, status };
-};

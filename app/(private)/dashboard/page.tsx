@@ -1,5 +1,5 @@
-import { BarChartMultiple } from "@/modules/auth/components/chart/bar-chart-multiple";
-import { RadialChatText } from "@/modules/auth/components/chart/radial-chart-text";
+import { BarChartMultiple } from "@/modules/core/components/chart/bar-chart-multiple";
+import { RadialChatText } from "@/modules/core/components/chart/radial-chart-text";
 import { Skeleton } from "@/modules/core/components/ui/skeleton";
 
 export default function Page() {

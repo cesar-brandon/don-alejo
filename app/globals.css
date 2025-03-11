@@ -141,9 +141,15 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    scrollbar-color: var(--border) var(--background);
+    scrollbar-track-color: var(--background);
+    scrollbar-thumb-color: var(--border);
+    scrollbar-thumb-hover-color: var(--border);
+    scrollbar-thumb-active-color: var(--border);
   }
 
   body {
     @apply bg-background text-foreground;
   }
 }
+

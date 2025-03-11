@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Moon, Sun, type LucideIcon } from "lucide-react";
+import { Moon, Sun } from "lucide-react";
 
 import {
   SidebarGroup,
@@ -10,18 +10,20 @@ import {
 } from "@/components/ui/sidebar";
 import { Button } from "@/modules/core/components/ui/button";
 import { useTheme } from "next-themes";
+import { NavItem } from "../../types/nav";
 
 export function NavSecondary({
   items,
   ...props
 }: {
-  items: {
-    title: string;
-    url: string;
-    icon: LucideIcon;
-  }[];
+  items: NavItem[];
 } & React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
   const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <SidebarGroup {...props}>
@@ -31,7 +33,7 @@ export function NavSecondary({
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton asChild size="sm">
                 <a href={item.url}>
-                  <item.icon />
+                  {item.icon && <item.icon />}
                   <span>{item.title}</span>
                 </a>
               </SidebarMenuButton>
@@ -39,14 +41,16 @@ export function NavSecondary({
           ))}
           <SidebarMenuItem key="dark-mode">
             <SidebarMenuButton asChild size="sm">
-              <Button
-                className="justify-start has-[>svg]:px-2"
-                variant="ghost"
-                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              >
-                {theme === "dark" ? <Sun /> : <Moon />}
-                Modo {theme === "dark" ? "claro" : "oscuro"}
-              </Button>
+              {mounted && (
+                <Button
+                  className="justify-start has-[>svg]:px-2"
+                  variant="ghost"
+                  onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                >
+                  {theme === "dark" ? <Sun /> : <Moon />}
+                  Modo {theme === "dark" ? "claro" : "oscuro"}
+                </Button>
+              )}
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

@@ -6,7 +6,7 @@ import { Label } from "@/modules/core/components/ui/label";
 import { cn } from "@/modules/core/lib/utils";
 import { Eye, Loader2 } from "lucide-react";
 import { useState } from "react";
-import { useLogin } from "../hook/userLogin";
+import { useLogin } from "../hook/useLogin";
 import { redirect } from "next/navigation";
 
 export function LoginForm({
@@ -17,7 +17,7 @@ export function LoginForm({
   const [, loginAction, loginPending] = useLogin();
 
   const handleSubmit = async (formData: FormData) => {
-    await loginAction(formData);
+    loginAction(formData);
     if (!loginPending) {
       redirect("/dashboard");
     }

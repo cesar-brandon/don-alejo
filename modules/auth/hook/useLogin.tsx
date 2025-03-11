@@ -1,8 +1,8 @@
 import { useActionState } from "react";
-import { withCallbacks } from "../utils/callbacks";
+import { withCallbacks } from "../../core/lib/callbacks";
 import { login } from "../actions/login";
 import { toast } from "sonner";
-import { ActionState } from "../type/action-state";
+import { ActionState } from "../../core/types/action-state";
 
 export const useLogin = () => {
   return useActionState(
@@ -24,6 +24,6 @@ export const useLogin = () => {
         toast.dismiss(reference);
       },
     }),
-    null
+    null,
   );
 };
