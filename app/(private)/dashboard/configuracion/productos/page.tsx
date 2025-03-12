@@ -1,5 +1,5 @@
-import ProductForm from "@/modules/configuration/components/product/form";
-import ProductList from "@/modules/configuration/components/product/list";
+import ProductForm from "@/configuration/components/product/form";
+import ProductList from "@/configuration/components/product/list";
 import { createClient } from "@/modules/core/lib/supabase/server";
 
 export default async function MenuPage() {

@@ -1,5 +1,5 @@
-import ProductGroupForm from "@/modules/configuration/components/product-group/form";
-import ProductGroupList from "@/modules/configuration/components/product-group/list";
+import ProductGroupForm from "@/configuration/components/product-group/form";
+import ProductGroupList from "@/configuration/components/product-group/list";
 import { createClient } from "@/modules/core/lib/supabase/server";
 
 export default async function ProductGroupPage() {
