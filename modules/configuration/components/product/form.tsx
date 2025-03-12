@@ -21,21 +21,42 @@ import {
 } from "@/modules/core/components/ui/drawer";
 import { Input } from "@/modules/core/components/ui/input";
 import { Label } from "@/modules/core/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/modules/core/components/ui/select";
 import { Textarea } from "@/modules/core/components/ui/textarea";
 import { useMediaQuery } from "@/modules/core/hooks/use-media-query";
 import { createClient } from "@/modules/core/lib/supabase/client";
 import { cn } from "@/modules/core/lib/utils";
 import { Tables } from "@/modules/core/types/database.types";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Pen, Plus } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
-export default function ProductGroupForm({
+const fetchGroups = async (): Promise<Tables<"product_group">[]> => {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from("product_group")
+    .select()
+    .eq("state", 1);
+  if (error) {
+    toast.error("Error al cargar los grupos de productos");
+    return [];
+  }
+  return data;
+};
+
+export default function ProductForm({
   id,
   item,
 }: {
   id?: string;
-  item?: Tables<"product_group">;
+  item?: Tables<"product">;
 }) {
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
@@ -106,20 +127,32 @@ function Form({
   setOpen,
 }: {
   className?: string;
-  item?: Tables<"product_group">;
+  item?: Tables<"product">;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
+  const supabase = createClient();
   const queryClient = useQueryClient();
   const [formData, setFormData] = useState({
+    id_product_group: item?.id_product_group || "",
     name: item?.name || "",
     description: item?.description || "",
+    price: item?.price || 0,
+  });
+
+  const { data: productGroups } = useQuery<Tables<"product_group">[]>({
+    queryKey: ["product_group"],
+    queryFn: fetchGroups,
   });
 
   const { mutate, isPending } = useMutation({
-    mutationFn: async (formData: { name: string; description: string }) => {
-      const supabase = createClient();
+    mutationFn: async (formData: {
+      id_product_group: string;
+      name: string;
+      description: string;
+      price: number;
+    }) => {
       if (!item) {
-        return await supabase.from("product_group").insert(formData);
+        return await supabase.from("product").insert(formData);
       }
       if (item.id) {
         const {
@@ -131,14 +164,11 @@ function Form({
           user_upd: user?.id ?? "",
           updated_at: new Date().toISOString(),
         };
-        await supabase
-          .from("product_group")
-          .update(updateData)
-          .eq("id", item.id);
+        await supabase.from("product").update(updateData).eq("id", item.id);
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["product_group"] });
+      queryClient.invalidateQueries({ queryKey: ["product"] });
       setOpen(false);
     },
   });
@@ -159,14 +189,40 @@ function Form({
       className={cn("grid items-start gap-4", className)}
     >
       <div className="grid gap-2">
-        <Label htmlFor="name">Nombre del grupo</Label>
+        <Label htmlFor="id_product_group">Grupo de Producto</Label>
+        <Select
+          name="id_product_group"
+          defaultValue={formData.id_product_group}
+          value={formData.id_product_group}
+          onValueChange={(value: string) => {
+            handleChange({
+              target: { name: "id_product_group", value },
+            } as React.ChangeEvent<HTMLInputElement>);
+          }}
+        >
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Grupo de Producto" />
+          </SelectTrigger>
+          <SelectContent>
+            {productGroups &&
+              productGroups.map((group: Tables<"product_group">) => (
+                <SelectItem key={group.id} value={group.id}>
+                  {group.name}
+                </SelectItem>
+              ))}
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="grid gap-2">
+        <Label htmlFor="name">Nombre del producto</Label>
         <Input
           type="text"
           id="name"
           name="name"
-          placeholder="Ej. Entradas"
+          placeholder="Ej. Arroz chaufa"
           value={formData.name}
           onChange={handleChange}
+          required
         />
       </div>
       <div className="grid gap-2">
@@ -178,6 +234,18 @@ function Form({
           value={formData.description}
           onChange={handleChange}
           className="max-h-32"
+        />
+      </div>
+      <div className="grid gap-2">
+        <Label htmlFor="price">Precio</Label>
+        <Input
+          type="number"
+          id="price"
+          name="price"
+          placeholder="Ej. 100"
+          value={formData.price}
+          onChange={handleChange}
+          required
         />
       </div>
       <Button type="submit" isLoading={isPending}>

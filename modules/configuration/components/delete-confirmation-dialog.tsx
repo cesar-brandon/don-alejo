@@ -14,7 +14,15 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
 
-export default function DeleteConfirmationDialog({ id }: { id: string }) {
+export default function DeleteConfirmationDialog({
+  id,
+  tableName,
+  queryKey,
+}: {
+  id: string;
+  tableName: string;
+  queryKey: string;
+}) {
   const [open, setOpen] = useState(false);
   const queryClient = useQueryClient();
 
@@ -26,12 +34,12 @@ export default function DeleteConfirmationDialog({ id }: { id: string }) {
       } = await supabase.auth.getUser();
 
       await supabase
-        .from("product_group")
+        .from(tableName)
         .update({ state: 0, user_del: user?.id, deleted_at: new Date() })
         .match({ id });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["product_group"] });
+      queryClient.invalidateQueries({ queryKey: [queryKey] });
       setOpen(false);
     },
   });

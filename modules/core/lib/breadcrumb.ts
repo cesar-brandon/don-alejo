@@ -26,8 +26,8 @@ export const navData: NavData = {
           url: "/dashboard/configuracion/grupos",
         },
         {
-          title: "Menú",
-          url: "/dashboard/configuracion/menu",
+          title: "Productos",
+          url: "/dashboard/configuracion/productos",
         },
         {
           title: "Roles",

@@ -9,6 +9,59 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      product: {
+        Row: {
+          created_at: string
+          deleted_at: string | null
+          description: string | null
+          id: string
+          id_product_group: string | null
+          name: string
+          price: number
+          state: boolean | null
+          updated_at: string | null
+          user_del: string | null
+          user_reg: string | null
+          user_upd: string | null
+        }
+        Insert: {
+          created_at?: string
+          deleted_at?: string | null
+          description?: string | null
+          id?: string
+          id_product_group?: string | null
+          name: string
+          price: number
+          state?: boolean | null
+          updated_at?: string | null
+          user_del?: string | null
+          user_reg?: string | null
+          user_upd?: string | null
+        }
+        Update: {
+          created_at?: string
+          deleted_at?: string | null
+          description?: string | null
+          id?: string
+          id_product_group?: string | null
+          name?: string
+          price?: number
+          state?: boolean | null
+          updated_at?: string | null
+          user_del?: string | null
+          user_reg?: string | null
+          user_upd?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_id_product_group_fkey"
+            columns: ["id_product_group"]
+            isOneToOne: false
+            referencedRelation: "product_group"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       product_group: {
         Row: {
           created_at: string
