@@ -1,4 +1,3 @@
-import type { TableData } from "./table-view";
 import {
   Card,
   CardContent,
@@ -8,7 +7,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Users, MapPin, Clock, CalendarClock, Phone } from "lucide-react";
-import { TableStatus } from "../../../types/table";
+import { TableData, TableStatus } from "../../../types/table";
 
 interface TableDetailsProps {
   table: TableData | null;
