@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Users, MapPin, Clock, CalendarClock, Phone } from "lucide-react";
+import { TableStatus } from "../../../types/table";
 
 interface TableDetailsProps {
   table: TableData | null;
@@ -19,16 +20,13 @@ export default function TableDetails({ table }: TableDetailsProps) {
     if (!table) return null;
 
     switch (table.status) {
-      case "available":
+      case TableStatus.Available:
         return (
-          <Badge
-            variant="outline"
-            className="bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-800/50"
-          >
+          <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-800/50">
             Disponible
           </Badge>
         );
-      case "occupied":
+      case TableStatus.Occupied:
         return (
           <Badge
             variant="outline"
@@ -37,7 +35,7 @@ export default function TableDetails({ table }: TableDetailsProps) {
             Ocupado
           </Badge>
         );
-      case "reserved":
+      case TableStatus.Reserved:
         return (
           <Badge
             variant="outline"
@@ -65,11 +63,11 @@ export default function TableDetails({ table }: TableDetailsProps) {
     // Get status-based styling for the table
     const getTableStatusStyles = () => {
       switch (table.status) {
-        case "available":
+        case TableStatus.Available:
           return "bg-emerald-50 border-emerald-200 dark:bg-emerald-950/30 dark:border-emerald-800/50";
-        case "occupied":
+        case TableStatus.Occupied:
           return "bg-rose-50 border-rose-200 dark:bg-rose-950/30 dark:border-rose-800/50";
-        case "reserved":
+        case TableStatus.Reserved:
           return "bg-amber-50 border-amber-200 dark:bg-amber-950/30 dark:border-amber-800/50";
         default:
           return "bg-gray-50 border-gray-200 dark:bg-gray-800/30 dark:border-gray-700/50";
@@ -79,7 +77,7 @@ export default function TableDetails({ table }: TableDetailsProps) {
     // Get status-based styling for the chairs
     const getChairStatusStyles = () => {
       switch (table.status) {
-        case "available":
+        case TableStatus.Available:
           return "bg-emerald-100 border-emerald-300 dark:bg-emerald-900/30 dark:border-emerald-700/50";
         case "occupied":
           return "bg-rose-100 border-rose-300 dark:bg-rose-900/30 dark:border-rose-700/50";
@@ -235,11 +233,13 @@ export default function TableDetails({ table }: TableDetailsProps) {
     return (
       <Card className="h-full">
         <CardHeader>
-          <CardTitle>Table Details</CardTitle>
-          <CardDescription>Select a table to view details</CardDescription>
+          <CardTitle>Detalles de la Mesa</CardTitle>
+          <CardDescription>
+            Seleccione una mesa para ver los detalles
+          </CardDescription>
         </CardHeader>
         <CardContent className="flex items-center justify-center h-[300px] text-gray-400">
-          No table selected
+          Ninguna mesa seleccionada
         </CardContent>
       </Card>
     );
@@ -251,7 +251,7 @@ export default function TableDetails({ table }: TableDetailsProps) {
         <div className="flex justify-between items-start">
           <div>
             <CardTitle>{table.name}</CardTitle>
-            <CardDescription>Table Information</CardDescription>
+            <CardDescription>Información de la Mesa</CardDescription>
           </div>
           {getStatusBadge()}
         </div>
@@ -263,15 +263,15 @@ export default function TableDetails({ table }: TableDetailsProps) {
           <div className="flex items-center">
             <Users className="h-5 w-5 mr-3 text-gray-500" />
             <div>
-              <p className="text-sm font-medium">Capacity</p>
-              <p className="text-sm text-gray-500">{table.capacity} people</p>
+              <p className="text-sm font-medium">Capacidad</p>
+              <p className="text-sm text-gray-500">{table.capacity} personas</p>
             </div>
           </div>
 
           <div className="flex items-center">
             <MapPin className="h-5 w-5 mr-3 text-gray-500" />
             <div>
-              <p className="text-sm font-medium">Location</p>
+              <p className="text-sm font-medium">Ubicación</p>
               <p className="text-sm text-gray-500">{table.location}</p>
             </div>
           </div>
@@ -279,23 +279,25 @@ export default function TableDetails({ table }: TableDetailsProps) {
           <div className="flex items-center">
             <Clock className="h-5 w-5 mr-3 text-gray-500" />
             <div>
-              <p className="text-sm font-medium">Last Cleaned</p>
+              <p className="text-sm font-medium">Última Limpieza</p>
               <p className="text-sm text-gray-500">
-                {table.lastCleaned || "Not recorded"}
+                {table.lastCleaned || "No registrado"}
               </p>
             </div>
           </div>
 
           {table.status === "reserved" && table.reservationInfo && (
             <div className="mt-6 p-4 bg-amber-50 dark:bg-amber-950/30 rounded-lg border border-amber-200 dark:border-amber-800/50">
-              <h3 className="text-sm font-medium mb-2">Reservation Details</h3>
+              <h3 className="text-sm font-medium mb-2">
+                Detalles de la Reserva
+              </h3>
 
               <div className="space-y-2">
                 <div className="flex items-center">
                   <Users className="h-4 w-4 mr-2 text-amber-700 dark:text-amber-400" />
                   <p className="text-sm text-gray-700 dark:text-gray-300">
                     {table.reservationInfo.name} ({table.reservationInfo.guests}{" "}
-                    guests)
+                    invitados)
                   </p>
                 </div>
 

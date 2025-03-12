@@ -11,8 +11,8 @@ export function RecentOrders() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Recent Sales</CardTitle>
-        <CardDescription>You made 265 sales this month.</CardDescription>
+        <CardTitle>Ordenes Recientes</CardTitle>
+        <CardDescription>Realizaste 265 ventas este mes.</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-8">
@@ -27,7 +27,7 @@ export function RecentOrders() {
                 olivia.martin@email.com
               </p>
             </div>
-            <div className="ml-auto font-medium">+$1,999.00</div>
+            <div className="ml-auto font-medium">+S/.1,999.00</div>
           </div>
           <div className="flex items-center">
             <Avatar className="flex h-9 w-9 items-center justify-center space-y-0 border">
@@ -40,7 +40,7 @@ export function RecentOrders() {
                 jackson.lee@email.com
               </p>
             </div>
-            <div className="ml-auto font-medium">+$39.00</div>
+            <div className="ml-auto font-medium">+S/.39.00</div>
           </div>
           <div className="flex items-center">
             <Avatar className="h-9 w-9">
@@ -55,7 +55,7 @@ export function RecentOrders() {
                 isabella.nguyen@email.com
               </p>
             </div>
-            <div className="ml-auto font-medium">+$299.00</div>
+            <div className="ml-auto font-medium">+S/.299.00</div>
           </div>
           <div className="flex items-center">
             <Avatar className="h-9 w-9">
@@ -66,7 +66,7 @@ export function RecentOrders() {
               <p className="text-sm font-medium leading-none">William Kim</p>
               <p className="text-sm text-muted-foreground">will@email.com</p>
             </div>
-            <div className="ml-auto font-medium">+$99.00</div>
+            <div className="ml-auto font-medium">+S/.99.00</div>
           </div>
           <div className="flex items-center">
             <Avatar className="h-9 w-9">
@@ -79,7 +79,7 @@ export function RecentOrders() {
                 sofia.davis@email.com
               </p>
             </div>
-            <div className="ml-auto font-medium">+$39.00</div>
+            <div className="ml-auto font-medium">+S/.39.00</div>
           </div>
         </div>
       </CardContent>

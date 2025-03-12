@@ -2,122 +2,122 @@
 import { RecentOrders } from "@/modules/dashboard/home/components/recent-orders";
 import { SalesChart } from "@/modules/dashboard/home/components/sales-chart";
 import { useState } from "react";
-import { TableData } from "@/modules/dashboard/home/components/restaurant/table/table-view";
 import TableList from "@/modules/dashboard/home/components/restaurant/table/table-list";
 import TableDetails from "@/modules/dashboard/home/components/restaurant/table/table-details";
-import TableFilter, {
+import TableFilter from "@/modules/dashboard/home/components/restaurant/table-filter";
+import {
+  TableData,
+  TableShape,
   TableStatus,
-} from "@/modules/dashboard/home/components/restaurant/table-filter";
+} from "@/modules/dashboard/home/types/table";
 
 export default function Page() {
   const [selectedStatus, setSelectedStatus] = useState<TableStatus | "all">(
     "all",
   );
+
   const [tables] = useState<TableData[]>([
     {
       id: 1,
-      name: "T1",
+      name: "M1",
       capacity: 4,
-      shape: "rectangle",
-      status: "available",
+      shape: TableShape.Rectangle,
+      status: TableStatus.Available,
       width: 2,
       length: 3,
-      location: "Main Floor - Window",
-      lastCleaned: "Today, 10:30 AM",
+      location: "Cerca de la Ventana",
+      lastCleaned: "Hoy, 10:30 AM",
     },
     {
       id: 2,
-      name: "T2",
+      name: "M2",
       capacity: 2,
-      shape: "rectangle",
-      status: "occupied",
+      shape: TableShape.Round,
+      status: TableStatus.Occupied,
       width: 1,
       length: 2,
-      location: "Main Floor - Bar",
-      lastCleaned: "Today, 11:45 AM",
+      location: "Cerca de la Barra",
+      lastCleaned: "Hoy, 11:45 AM",
     },
     {
       id: 3,
-      name: "T3",
+      name: "M3",
       capacity: 6,
-      shape: "rectangle",
-      status: "reserved",
+      shape: TableShape.Rectangle,
+      status: TableStatus.Reserved,
       width: 2,
       length: 4,
-      location: "Main Floor - Center",
-      lastCleaned: "Today, 9:15 AM",
+      location: "Centro del Restaurante",
+      lastCleaned: "Hoy, 9:15 AM",
       reservationInfo: {
-        name: "Johnson Family",
-        time: "Today, 7:30 PM",
+        name: "Familia Casas",
+        time: "Hoy, 7:30 PM",
         guests: 5,
-        phone: "(555) 123-4567",
+        phone: "987654321",
       },
     },
     {
       id: 4,
-      name: "T4",
+      name: "M4",
       capacity: 8,
-      shape: "rectangle",
-      status: "available",
+      shape: TableShape.Rectangle,
+      status: TableStatus.Available,
       width: 2,
       length: 5,
-      location: "Main Floor - Back",
-      lastCleaned: "Today, 12:00 PM",
+      location: "Fondo del Restaurante",
+      lastCleaned: "Hoy, 12:00 PM",
     },
     {
       id: 5,
-      name: "T5",
+      name: "M5",
       capacity: 4,
-      shape: "square",
-      status: "available",
+      shape: TableShape.Square,
+      status: TableStatus.Available,
       width: 2,
       length: 2,
-      location: "Patio - North",
-      lastCleaned: "Today, 11:00 AM",
+      location: "Patio Norte",
+      lastCleaned: "Hoy, 11:00 AM",
     },
     {
       id: 6,
-      name: "T6",
+      name: "M6",
       capacity: 6,
-      shape: "rectangle",
-      status: "available",
+      shape: TableShape.Rectangle,
+      status: TableStatus.Available,
       width: 3,
       length: 2,
-      location: "Patio - South",
-      lastCleaned: "Today, 12:00 PM",
+      location: "Patio Sur",
+      lastCleaned: "Hoy, 12:00 PM",
     },
     {
       id: 7,
-      name: "T7",
+      name: "M7",
       capacity: 2,
-      shape: "round",
-      status: "occupied",
+      shape: TableShape.Round,
+      status: TableStatus.Occupied,
       width: 1,
       length: 1,
-      location: "Indoor - East",
-      lastCleaned: "Today, 1:00 PM",
+      location: "Interior Este",
+      lastCleaned: "Hoy, 1:00 PM",
     },
     {
       id: 8,
-      name: "T8",
+      name: "M8",
       capacity: 8,
-      shape: "square",
-      status: "reserved",
+      shape: TableShape.Square,
+      status: TableStatus.Reserved,
       width: 4,
       length: 4,
-      location: "Indoor - West",
-      lastCleaned: "Today, 2:00 PM",
+      location: "Interior Oeste",
+      lastCleaned: "Hoy, 2:00 PM",
     },
   ]);
 
-  // State for selected table
   const [selectedTableId, setSelectedTableId] = useState<number | null>(null);
 
-  // Find the selected table
   const selectedTable =
     tables.find((table) => table.id === selectedTableId) || null;
 
-  // Handle table selection
   const handleTableSelect = (table: TableData) => {
     setSelectedTableId(table.id);
   };

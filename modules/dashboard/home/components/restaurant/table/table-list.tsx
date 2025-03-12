@@ -1,8 +1,8 @@
 "use client";
 
 import { cn } from "@/modules/core/lib/utils";
-import type { TableData } from "./table-view";
 import TableView from "./table-view";
+import { TableData } from "../../../types/table";
 
 interface TableListProps {
   tables: TableData[];
@@ -19,7 +19,7 @@ export default function TableList({
 }: TableListProps) {
   return (
     <div className={cn("h-full overflow-y-auto", className)}>
-      <h2 className="text-lg font-medium mb-6">Tables</h2>
+      <h2 className="text-lg font-medium mb-6">Mesas</h2>
 
       <div className="grid grid-cols-2 gap-4">
         {tables.map((table) => (

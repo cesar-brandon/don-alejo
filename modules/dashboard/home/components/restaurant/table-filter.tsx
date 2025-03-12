@@ -2,8 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
-
-export type TableStatus = "available" | "occupied" | "reserved";
+import { TableStatus } from "../../types/table";
 
 interface TableFilterProps {
   selectedStatus: TableStatus | "all";
@@ -16,9 +15,9 @@ export default function TableFilter({
 }: TableFilterProps) {
   const filters: Array<{ value: TableStatus | "all"; label: string }> = [
     { value: "all", label: "Todas las Mesas" },
-    { value: "available", label: "Disponibles" },
-    { value: "occupied", label: "Ocupadas" },
-    { value: "reserved", label: "Reservadas" },
+    { value: TableStatus.Available, label: "Disponibles" },
+    { value: TableStatus.Occupied, label: "Ocupadas" },
+    { value: TableStatus.Reserved, label: "Reservadas" },
   ];
 
   return (
@@ -31,11 +30,11 @@ export default function TableFilter({
           onClick={() => onStatusChange(filter.value)}
           className={
             selectedStatus === filter.value
-              ? filter.value === "available"
+              ? filter.value === TableStatus.Available
                 ? "bg-emerald-600 hover:bg-emerald-700"
-                : filter.value === "occupied"
+                : filter.value === TableStatus.Occupied
                   ? "bg-rose-600 hover:bg-rose-700"
-                  : filter.value === "reserved"
+                  : filter.value === TableStatus.Reserved
                     ? "bg-amber-600 hover:bg-amber-700"
                     : ""
               : ""

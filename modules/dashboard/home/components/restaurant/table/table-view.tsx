@@ -2,26 +2,9 @@
 
 import { cn } from "@/modules/core/lib/utils";
 import { useState } from "react";
+import { TableData, TableStatus } from "../../../types/table";
 
-export interface TableData {
-  id: number;
-  name: string;
-  capacity: number;
-  shape: "rectangle" | "square" | "round";
-  status: "available" | "occupied" | "reserved";
-  width: number;
-  length: number;
-  location: string;
-  lastCleaned?: string;
-  reservationInfo?: {
-    name: string;
-    time: string;
-    guests: number;
-    phone: string;
-  };
-}
-
-interface TableViewProps {
+export interface TableViewProps {
   table: TableData;
   selected: boolean;
   onClick: (table: TableData) => void;
@@ -37,11 +20,11 @@ export default function TableView({
   // Get status-based styling for the table
   const getTableStatusStyles = () => {
     switch (table.status) {
-      case "available":
+      case TableStatus.Available:
         return "bg-emerald-50 border-emerald-200 dark:bg-emerald-950/30 dark:border-emerald-800/50";
-      case "occupied":
+      case TableStatus.Occupied:
         return "bg-rose-50 border-rose-200 dark:bg-rose-950/30 dark:border-rose-800/50";
-      case "reserved":
+      case TableStatus.Reserved:
         return "bg-amber-50 border-amber-200 dark:bg-amber-950/30 dark:border-amber-800/50";
       default:
         return "bg-gray-50 border-gray-200 dark:bg-gray-800/30 dark:border-gray-700/50";
@@ -51,11 +34,11 @@ export default function TableView({
   // Get status-based styling for the chairs
   const getChairStatusStyles = () => {
     switch (table.status) {
-      case "available":
+      case TableStatus.Available:
         return "bg-emerald-100 border-emerald-300 dark:bg-emerald-900/30 dark:border-emerald-700/50";
-      case "occupied":
+      case TableStatus.Occupied:
         return "bg-rose-100 border-rose-300 dark:bg-rose-900/30 dark:border-rose-700/50";
-      case "reserved":
+      case TableStatus.Reserved:
         return "bg-amber-100 border-amber-300 dark:bg-amber-900/30 dark:border-amber-700/50";
       default:
         return "bg-gray-100 border-gray-300 dark:bg-gray-700/30 dark:border-gray-600/50";
@@ -237,7 +220,7 @@ export default function TableView({
       {/* Hover tooltip */}
       {isHovered && (
         <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 px-2 py-1 bg-white dark:bg-gray-800 text-xs rounded shadow-md border z-10 whitespace-nowrap">
-          {table.name} - {table.capacity} seats
+          {table.name} - {table.capacity} asientos
         </div>
       )}
     </div>
