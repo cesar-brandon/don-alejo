@@ -1,6 +1,6 @@
 import { RadialChatText } from "@/modules/core/components/chart/radial-chart-text";
 import { Skeleton } from "@/modules/core/components/ui/skeleton";
-import { RecentSales } from "@/modules/dashboard/home/components/recent-orders";
+import { RecentOrders } from "@/modules/dashboard/home/components/recent-orders";
 import {
   Select,
   SelectContent,
@@ -18,16 +18,15 @@ export default function Page() {
         <div className="flex flex-col gap-4">
           <Select>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select a fruit" />
+              <SelectValue placeholder="Filtrar por estado de la mesa" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectLabel>Fruits</SelectLabel>
-                <SelectItem value="apple">Apple</SelectItem>
-                <SelectItem value="banana">Banana</SelectItem>
-                <SelectItem value="blueberry">Blueberry</SelectItem>
-                <SelectItem value="grapes">Grapes</SelectItem>
-                <SelectItem value="pineapple">Pineapple</SelectItem>
+                <SelectLabel>Estado de la Mesa</SelectLabel>
+                <SelectItem value="all">Todas</SelectItem>
+                <SelectItem value="occupied">Ocupada</SelectItem>
+                <SelectItem value="free">Libre</SelectItem>
+                <SelectItem value="reserved">Reservada</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
@@ -67,7 +66,7 @@ export default function Page() {
         <RadialChatText />
       </div>
       <div className="col-span-2 row-span-4 col-start-5 row-start-5">
-        <RecentSales />
+        <RecentOrders />
       </div>
     </div>
   );

@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "@/modules/core/components/ui/card";
 
-export function RecentSales() {
+export function RecentOrders() {
   return (
     <Card>
       <CardHeader>
