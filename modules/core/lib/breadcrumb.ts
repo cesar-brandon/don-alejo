@@ -10,8 +10,8 @@ import { NavData, NavItem } from "../types/nav";
 
 export const navData: NavData = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
+    name: "Cesar Brandon",
+    email: "cesarbrandon@example.com",
     avatar: "",
   },
   navMain: [
