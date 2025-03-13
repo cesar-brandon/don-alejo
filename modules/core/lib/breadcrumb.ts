@@ -29,14 +29,14 @@ export const navData: NavData = {
           title: "Productos",
           url: "/dashboard/configuracion/productos",
         },
-        {
-          title: "Roles",
-          url: "#",
-        },
-        {
-          title: "Usuarios",
-          url: "#",
-        },
+        // {
+        //   title: "Roles",
+        //   url: "#",
+        // },
+        // {
+        //   title: "Usuarios",
+        //   url: "/dashboard/configuracion/usuarios",
+        // },
       ],
     },
     {
