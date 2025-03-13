@@ -191,7 +191,7 @@ export default function TableView({
         "relative mx-auto cursor-pointer transition-all",
         selected ? "scale-105" : "hover:scale-102",
       )}
-      style={{ width: `${tableWidth + 60}px`, height: `${tableHeight + 60}px` }}
+      style={{ width: `${tableWidth + 30}px`, height: `${tableHeight + 30}px` }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => onClick(table)}
@@ -215,7 +215,7 @@ export default function TableView({
       </div>
 
       {/* Chairs */}
-      {generateChairs()}
+      {/* {generateChairs()} */}
 
       {/* Hover tooltip */}
       {isHovered && (

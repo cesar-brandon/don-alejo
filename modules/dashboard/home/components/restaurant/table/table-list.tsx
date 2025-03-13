@@ -18,7 +18,7 @@ export default function TableList({
   className,
 }: TableListProps) {
   return (
-    <div className={cn("h-full overflow-y-auto", className)}>
+    <div className={cn("h-full", className)}>
       <h2 className="text-lg font-medium mb-6">Mesas</h2>
 
       <div className="grid grid-cols-2 gap-4">

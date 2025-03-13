@@ -222,7 +222,7 @@ export default function TableDetails({ table }: TableDetailsProps) {
           </div>
 
           {/* Chairs */}
-          {generateChairs()}
+          {/* {generateChairs()} */}
         </div>
       </div>
     );

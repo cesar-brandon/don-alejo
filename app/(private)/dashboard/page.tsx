@@ -123,9 +123,10 @@ export default function Page() {
   };
 
   return (
-    <div className="grid grid-cols-6 grid-rows-8 gap-4">
-      <div className="col-span-2 row-span-8 col-start-1 row-start-1">
-        <div className="flex flex-col p-6">
+    <div className="grid gap-4 sm:flex sm:flex-col md:grid md:grid-cols-4 md:grid-rows-8 lg:grid-cols-6">
+      {/* Filtro y lista de mesas */}
+      <div className="md:col-span-2 md:row-span-8">
+        <div className="flex flex-col p-4">
           <TableFilter
             selectedStatus={selectedStatus}
             onStatusChange={setSelectedStatus}
@@ -134,17 +135,22 @@ export default function Page() {
             tables={tables}
             selectedTableId={selectedTableId}
             onTableSelect={handleTableSelect}
-            className="col-span-2 row-span-8 w-full"
+            className="w-full"
           />
         </div>
       </div>
-      <div className="col-span-2 row-span-8 col-start-3 row-start-1">
+
+      {/* Detalles de la mesa */}
+      <div className="md:col-span-2 md:row-span-8">
         <TableDetails table={selectedTable} />
       </div>
-      <div className="col-span-2 row-span-4 col-start-5 row-start-1">
+
+      {/* En `md`, Chart y Orders se van abajo */}
+      <div className="md:col-span-4 md:row-span-4 lg:col-span-2 lg:row-span-4">
         <SalesChart />
       </div>
-      <div className="col-span-2 row-span-4 col-start-5 row-start-5">
+
+      <div className="md:col-span-4 md:row-span-4 lg:col-span-2 lg:row-span-4">
         <RecentOrders />
       </div>
     </div>
