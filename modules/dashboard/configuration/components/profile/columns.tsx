@@ -4,7 +4,12 @@ import { ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tables } from "@/modules/core/types/database.types";
 import ProfileFormModal from "./form";
-import DeleteUserConfirmationDialog from "./delete-user";
+import {
+  DeleteUserConfirmationDialog,
+  UserBanButton,
+  UserUnbanButton,
+} from "./delete-user";
+import { Badge } from "@/modules/core/components/ui/badge";
 
 export const profileColumns: ColumnDef<Tables<"profile">>[] = [
   {
@@ -95,6 +100,29 @@ export const profileColumns: ColumnDef<Tables<"profile">>[] = [
     },
   },
   {
+    accessorKey: "state",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Estado
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div>
+        {row.getValue("state") ? (
+          <Badge variant="outlineSuccess">Activo</Badge>
+        ) : (
+          <Badge variant="outlineDestructive">Baneado</Badge>
+        )}
+      </div>
+    ),
+  },
+  {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
@@ -102,7 +130,12 @@ export const profileColumns: ColumnDef<Tables<"profile">>[] = [
 
       return (
         <div className="flex items-center p-2 gap-2">
-          <ProfileFormModal id={item.id} item={item} />
+          {item.state ? <ProfileFormModal id={item.id} item={item} /> : null}
+          {item.state ? (
+            <UserBanButton id={item.id} />
+          ) : (
+            <UserUnbanButton id={item.id} />
+          )}
           <DeleteUserConfirmationDialog id={item.id} />
         </div>
       );

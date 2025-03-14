@@ -4,10 +4,7 @@ import ProfileList from "@/modules/dashboard/configuration/components/profile/li
 
 export default async function MenuPage() {
   const supabase = await createClient();
-  const { data: profiles, error } = await supabase
-    .from("profile")
-    .select()
-    .eq("state", 1);
+  const { data: profiles, error } = await supabase.from("profile").select();
 
   if (error) {
     return (

@@ -41,18 +41,29 @@ export async function deleteUserAction(userId: string) {
   return { message: "Usuario eliminado correctamente" };
 }
 
-export async function banUserAction(userId: string, currentUserId: string) {
+export async function banUserAction(userId: string) {
   if (!userId) {
     return { error: "ID de usuario inválido" };
   }
 
   const { error } = await supabase.auth.admin.updateUserById(userId, {
-    ban_duration: "",
-    user_metadata: {
-      state: 0,
-      user_del: currentUserId,
-      deleted_at: new Date().toLocaleString(),
-    },
+    ban_duration: "1000000h",
+  });
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  return { message: "Usuario baneado correctamente" };
+}
+
+export async function unbanUserAction(userId: string) {
+  if (!userId) {
+    return { error: "ID de usuario inválido" };
+  }
+
+  const { error } = await supabase.auth.admin.updateUserById(userId, {
+    ban_duration: "0h",
   });
 
   if (error) {
