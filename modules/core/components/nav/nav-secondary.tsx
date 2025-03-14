@@ -11,6 +11,7 @@ import {
 import { Button } from "@/modules/core/components/ui/button";
 import { useTheme } from "next-themes";
 import { NavItem } from "../../types/nav";
+import { Skeleton } from "../ui/skeleton";
 
 export function NavSecondary({
   items,
@@ -41,7 +42,7 @@ export function NavSecondary({
           ))}
           <SidebarMenuItem key="dark-mode">
             <SidebarMenuButton asChild size="sm">
-              {mounted && (
+              {mounted ? (
                 <Button
                   className="justify-start has-[>svg]:px-2"
                   variant="ghost"
@@ -50,6 +51,8 @@ export function NavSecondary({
                   {theme === "dark" ? <Sun /> : <Moon />}
                   Modo {theme === "dark" ? "claro" : "oscuro"}
                 </Button>
+              ) : (
+                <Skeleton className="w-full h-8" />
               )}
             </SidebarMenuButton>
           </SidebarMenuItem>

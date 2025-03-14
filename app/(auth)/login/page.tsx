@@ -1,5 +1,6 @@
 import { LoginForm } from "@/modules/auth/components/login-form";
 import LogoIcon from "@/modules/core/components/icons/logo-icon";
+import Image from "next/image";
 import Link from "next/link";
 
 export default async function LoginPage() {
@@ -24,10 +25,11 @@ export default async function LoginPage() {
         </div>
       </div>
       <div className="relative hidden bg-muted lg:block">
-        <img
+        <Image
           src="/images/presentation/1.jpg"
           alt="Image"
           className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+          fill
         />
       </div>
     </div>

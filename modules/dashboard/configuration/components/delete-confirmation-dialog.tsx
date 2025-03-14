@@ -30,12 +30,16 @@ export default function DeleteConfirmationDialog({
   const { mutate, isPending } = useMutation({
     mutationFn: async () => {
       const {
-        data: { user },
-      } = await supabase.auth.getUser();
+        data: { session },
+      } = await supabase.auth.getSession();
 
       await supabase
         .from(tableName)
-        .update({ state: 0, user_del: user?.id, deleted_at: new Date() })
+        .update({
+          state: 0,
+          user_del: session?.user?.id,
+          deleted_at: new Date(),
+        })
         .match({ id });
     },
     onSuccess: () => {

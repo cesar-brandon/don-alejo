@@ -123,12 +123,12 @@ function Form({
       }
       if (item.id) {
         const {
-          data: { user },
-        } = await supabase.auth.getUser();
+          data: { session },
+        } = await supabase.auth.getSession();
 
         const updateData = {
           ...formData,
-          user_upd: user?.id ?? "",
+          user_upd: session?.user?.id ?? "",
           updated_at: new Date().toISOString(),
         };
         await supabase

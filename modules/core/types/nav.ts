@@ -1,3 +1,4 @@
+import { Role } from "@/modules/dashboard/configuration/config/role";
 import { type LucideIcon } from "lucide-react";
 
 export interface NavItem {
@@ -6,12 +7,7 @@ export interface NavItem {
   icon?: LucideIcon;
   isActive?: boolean;
   items?: NavItem[];
-}
-
-interface User {
-  name: string;
-  email: string;
-  avatar: string;
+  allowedRoles?: Role[];
 }
 
 interface Project {
@@ -21,7 +17,6 @@ interface Project {
 }
 
 export interface NavData {
-  user: User;
   navMain: NavItem[];
   navSecondary: NavItem[];
   projects: Project[];

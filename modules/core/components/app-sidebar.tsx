@@ -16,8 +16,32 @@ import { NavUser } from "./nav/nav-user";
 import LogoIcon from "@/modules/core/components/icons/logo-icon";
 import Link from "next/link";
 import { navData } from "../lib/breadcrumb";
+import { useQuery } from "@tanstack/react-query";
+import { createClient } from "../lib/supabase/client";
+import { toast } from "sonner";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const supabase = createClient();
+  const {
+    data: user,
+    isPending,
+    isError,
+  } = useQuery({
+    queryKey: ["session"],
+    queryFn: async () => {
+      const { data, error } = await supabase.auth.getSession();
+      if (error) {
+        throw new Error(error.message);
+      }
+      return data.session?.user;
+    },
+  });
+
+  if (isError) {
+    toast.error("Error al cargar la sesión");
+    return null;
+  }
+
   return (
     <Sidebar variant="inset" {...props}>
       <SidebarHeader>
@@ -38,12 +62,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={navData.navMain} />
+        <NavMain items={navData.navMain} userRole={user?.user_metadata?.role} />
         {/* <NavProjects projects={data.projects} /> */}
         <NavSecondary items={navData.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={navData.user} />
+        <NavUser user={user} isPending={isPending} />
       </SidebarFooter>
     </Sidebar>
   );

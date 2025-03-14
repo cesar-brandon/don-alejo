@@ -24,13 +24,13 @@ export default function DeleteUserConfirmationDialog({ id }: { id: string }) {
   const { mutate, isPending } = useMutation({
     mutationFn: async () => {
       const {
-        data: { user },
+        data: { session },
         error: userError,
-      } = await supabase.auth.getUser();
-      if (userError || !user?.id)
+      } = await supabase.auth.getSession();
+      if (userError || !session?.user?.id)
         throw new Error("No se pudo obtener el usuario autenticado.");
 
-      const result = await banUserAction(id, user.id);
+      const result = await banUserAction(id, session.user.id);
 
       if (result.error) throw new Error("Error al banear el usuario.");
     },

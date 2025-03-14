@@ -1,41 +1,30 @@
-import {
-  Frame,
-  HandPlatter,
-  Map,
-  PieChart,
-  Settings,
-  Utensils,
-} from "lucide-react";
+import { HandPlatter, Settings, Utensils } from "lucide-react";
 import { NavData, NavItem } from "../types/nav";
+import { Role } from "@/modules/dashboard/configuration/config/role";
 
 export const navData: NavData = {
-  user: {
-    name: "Cesar Brandon",
-    email: "cesarbrandon@example.com",
-    avatar: "",
-  },
   navMain: [
     {
       title: "Configuración",
       url: "/configuracion/menu",
       icon: Settings,
       isActive: true,
+      allowedRoles: [Role.Admin], // Solo los admins pueden ver esto
       items: [
         {
           title: "Grupos",
           url: "/dashboard/configuracion/grupos",
+          allowedRoles: [Role.Admin],
         },
         {
           title: "Productos",
           url: "/dashboard/configuracion/productos",
+          allowedRoles: [Role.Admin, Role.Cajero],
         },
-        // {
-        //   title: "Roles",
-        //   url: "#",
-        // },
         {
           title: "Usuarios",
           url: "/dashboard/configuracion/usuarios",
+          allowedRoles: [Role.Admin],
         },
       ],
     },
@@ -43,10 +32,12 @@ export const navData: NavData = {
       title: "Pedidos",
       url: "#",
       icon: HandPlatter,
+      allowedRoles: [Role.Admin, Role.Mesero],
       items: [
         {
           title: "Gestión de Pedidos",
           url: "#",
+          allowedRoles: [Role.Admin, Role.Mesero],
         },
       ],
     },
@@ -54,43 +45,18 @@ export const navData: NavData = {
       title: "Cocina",
       url: "#",
       icon: Utensils,
+      allowedRoles: [Role.Admin, Role.Cocinero],
       items: [
         {
           title: "Pedidos",
           url: "#",
+          allowedRoles: [Role.Admin, Role.Cocinero],
         },
       ],
     },
-    // {
-    //   title: "Reportes",
-    //   url: "#",
-    //   icon: SquareChartGantt,
-    //   items: [
-    //     {
-    //       title: "Ventas",
-    //       url: "#",
-    //     },
-    //   ],
-    // },
   ],
   navSecondary: [],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
-    },
-  ],
+  projects: [],
 };
 
 export const generateRouteMap = (

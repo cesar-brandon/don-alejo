@@ -156,8 +156,8 @@ function ProfileForm({
       role: string;
     }) => {
       const {
-        data: { user },
-      } = await supabase.auth.getUser();
+        data: { session },
+      } = await supabase.auth.getSession();
 
       if (!item) {
         // Crear usuario con metadata
@@ -170,7 +170,7 @@ function ProfileForm({
               first_name: formData.first_name,
               last_name: formData.last_name,
               role: formData.role,
-              user_reg: user?.id ?? "",
+              user_reg: session?.user?.id ?? "",
             },
           },
         });
@@ -186,7 +186,7 @@ function ProfileForm({
           first_name: formData.first_name,
           last_name: formData.last_name,
           role: formData.role,
-          user_upd: user?.id ?? "",
+          user_upd: session?.user?.id ?? "",
           updated_at: new Date().toISOString(),
         })
         .eq("id", item.id);

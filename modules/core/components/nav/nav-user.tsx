@@ -1,11 +1,11 @@
 "use client";
 
-import { ChevronsUpDown, LogOut } from "lucide-react";
-
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ChevronsUpDown, LogOut, ShieldCheck } from "lucide-react";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -18,17 +18,22 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { logout } from "@/modules/auth/actions/logout";
+import { getInitials } from "../../lib/utils";
+import { Skeleton } from "../ui/skeleton";
+import { User } from "@supabase/supabase-js";
 
 export function NavUser({
   user,
+  isPending,
 }: {
-  user: {
-    name: string;
-    email: string;
-    avatar: string;
-  };
+  user: User | undefined;
+  isPending: boolean;
 }) {
   const { isMobile } = useSidebar();
+
+  if (!user || isPending) {
+    return <Skeleton className="w-full h-11" />;
+  }
 
   return (
     <SidebarMenu>
@@ -40,11 +45,18 @@ export function NavUser({
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="rounded-lg">CB</AvatarFallback>
+                {/* <AvatarImage src={user.avatar} alt={user.name} /> */}
+                <AvatarFallback className="rounded-lg">
+                  {getInitials(
+                    user.user_metadata.first_name,
+                    user.user_metadata.last_name,
+                  )}
+                </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{user.name}</span>
+                <span className="truncate font-semibold">
+                  {user.user_metadata.first_name}
+                </span>
                 <span className="truncate text-xs">{user.email}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
@@ -59,23 +71,34 @@ export function NavUser({
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.avatar} alt={user.name} />
-                  <AvatarFallback className="rounded-lg">CR</AvatarFallback>
+                  {/* <AvatarImage src={user.avatar} alt={user.name} /> */}
+                  <AvatarFallback className="rounded-lg">
+                    {getInitials(
+                      user.user_metadata.first_name,
+                      user.user_metadata.last_name,
+                    )}
+                  </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{user.name}</span>
+                  <span className="truncate font-semibold">
+                    {user.user_metadata.first_name}
+                  </span>
                   <span className="truncate text-xs">{user.email}</span>
                 </div>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            {/* <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Sparkles />
-                Upgrade to Pro
+            <DropdownMenuGroup>
+              <DropdownMenuItem
+                className="dark:text-green-400 text-green-800 font-bold dark:font-normal"
+                disabled
+              >
+                <ShieldCheck className="dark:stroke-green-400 stroke-green-800 stroke-3 dark:stroke-2" />
+                {user.user_metadata.role}
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
+            {/*
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <BadgeCheck />
