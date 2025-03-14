@@ -33,10 +33,10 @@ export const navData: NavData = {
         //   title: "Roles",
         //   url: "#",
         // },
-        // {
-        //   title: "Usuarios",
-        //   url: "/dashboard/configuracion/usuarios",
-        // },
+        {
+          title: "Usuarios",
+          url: "/dashboard/configuracion/usuarios",
+        },
       ],
     },
     {

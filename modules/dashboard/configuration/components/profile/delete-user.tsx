@@ -13,16 +13,10 @@ import { createClient } from "@/modules/core/lib/supabase/client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
+import { banUserAction } from "../../actions/user";
 
-export default function DeleteConfirmationDialog({
-  id,
-  tableName,
-  queryKey,
-}: {
-  id: string;
-  tableName: string;
-  queryKey: string;
-}) {
+export default function DeleteUserConfirmationDialog({ id }: { id: string }) {
   const [open, setOpen] = useState(false);
   const queryClient = useQueryClient();
   const supabase = createClient();
@@ -31,16 +25,23 @@ export default function DeleteConfirmationDialog({
     mutationFn: async () => {
       const {
         data: { user },
+        error: userError,
       } = await supabase.auth.getUser();
+      if (userError || !user?.id)
+        throw new Error("No se pudo obtener el usuario autenticado.");
 
-      await supabase
-        .from(tableName)
-        .update({ state: 0, user_del: user?.id, deleted_at: new Date() })
-        .match({ id });
+      const result = await banUserAction(id, user.id);
+
+      if (result.error) throw new Error("Error al banear el usuario.");
+    },
+    onError: (error) => {
+      console.error("Error en la mutación:", error);
+      toast.error("Error al eliminar el usuario.");
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [queryKey] });
+      queryClient.invalidateQueries({ queryKey: ["profile"] });
       setOpen(false);
+      toast.success("Usuario eliminado y baneado correctamente.");
     },
   });
 
@@ -54,7 +55,7 @@ export default function DeleteConfirmationDialog({
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
-            ¿Estás seguro de eliminar este dato?
+            ¿Estás seguro de eliminar este usuario?
           </AlertDialogTitle>
           <AlertDialogDescription>
             Esta acción no se puede deshacer.

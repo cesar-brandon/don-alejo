@@ -101,6 +101,51 @@ export type Database = {
         }
         Relationships: []
       }
+      profile: {
+        Row: {
+          created_at: string | null
+          deleted_at: string | null
+          email: string | null
+          first_name: string | null
+          id: string
+          last_name: string | null
+          role: string
+          state: boolean | null
+          updated_at: string | null
+          user_del: string | null
+          user_reg: string | null
+          user_upd: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          deleted_at?: string | null
+          email?: string | null
+          first_name?: string | null
+          id: string
+          last_name?: string | null
+          role?: string
+          state?: boolean | null
+          updated_at?: string | null
+          user_del?: string | null
+          user_reg?: string | null
+          user_upd?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          deleted_at?: string | null
+          email?: string | null
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          role?: string
+          state?: boolean | null
+          updated_at?: string | null
+          user_del?: string | null
+          user_reg?: string | null
+          user_upd?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

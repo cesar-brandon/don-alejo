@@ -1,28 +1,42 @@
+import { createClient } from "@/modules/core/lib/supabase/server";
+import ProfileFormModal from "@/modules/dashboard/configuration/components/profile/form";
+import ProfileList from "@/modules/dashboard/configuration/components/profile/list";
+
 export default async function MenuPage() {
-  // const supabase = await createClient();
-  // const { data: users, error } = await supabase
-  //   .from("auth.users")
-  //   .select("id, email, created_at");
-  //
-  // if (error) {
-  //   console.log(error);
-  //   return <div>error al cargar los productos</div>;
-  // } else {
-  //   console.log(users);
-  // }
-  //
+  const supabase = await createClient();
+  const { data: profiles, error } = await supabase
+    .from("profile")
+    .select()
+    .eq("state", 1);
+
+  if (error) {
+    return (
+      <div className="h-full flex flex-1 flex-col space-y-8 p-8">
+        <div className="sm:flex items-center justify-between space-y-2">
+          <div>
+            <h2 className="text-2xl font-bold tracking-tight">Usuarios</h2>
+            <p className="text-muted-foreground">
+              Configuración de los usuarios
+            </p>
+          </div>
+        </div>
+        <div>error al cargar los usuarios</div>
+      </div>
+    );
+  }
+
   return (
     <div className="h-full flex flex-1 flex-col space-y-8 p-8">
       <div className="sm:flex items-center justify-between space-y-2">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight">Productos</h2>
-          <p className="text-muted-foreground">
-            Configuración de los productos
-          </p>
+          <h2 className="text-2xl font-bold tracking-tight">Usuarios</h2>
+          <p className="text-muted-foreground">Configuración de los usuarios</p>
         </div>
-        <div>{/* <ProductForm /> */}</div>
+        <div>
+          <ProfileFormModal />
+        </div>
       </div>
-      {/* <ProductList initialData={products} /> */}
+      <ProfileList initialData={profiles} />
     </div>
   );
 }

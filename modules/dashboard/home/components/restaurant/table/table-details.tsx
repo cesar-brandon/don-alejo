@@ -7,7 +7,8 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Users, MapPin, Clock, CalendarClock, Phone } from "lucide-react";
-import { TableData, TableStatus } from "../../../types/table";
+import { TableData } from "../../../types/table";
+import { TableStatus } from "../../../config/table";
 
 interface TableDetailsProps {
   table: TableData | null;

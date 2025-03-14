@@ -2,7 +2,8 @@
 
 import { cn } from "@/modules/core/lib/utils";
 import { useState } from "react";
-import { TableData, TableStatus } from "../../../types/table";
+import { TableData } from "../../../types/table";
+import { TableStatus } from "../../../config/table";
 
 export interface TableViewProps {
   table: TableData;

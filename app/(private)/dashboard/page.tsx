@@ -5,11 +5,8 @@ import { useState } from "react";
 import TableList from "@/modules/dashboard/home/components/restaurant/table/table-list";
 import TableDetails from "@/modules/dashboard/home/components/restaurant/table/table-details";
 import TableFilter from "@/modules/dashboard/home/components/restaurant/table-filter";
-import {
-  TableData,
-  TableShape,
-  TableStatus,
-} from "@/modules/dashboard/home/types/table";
+import { TableData } from "@/modules/dashboard/home/types/table";
+import { TableShape, TableStatus } from "@/modules/dashboard/home/config/table";
 
 export default function Page() {
   const [selectedStatus, setSelectedStatus] = useState<TableStatus | "all">(

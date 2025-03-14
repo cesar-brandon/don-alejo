@@ -3,12 +3,12 @@ import { Tables } from "@/modules/core/types/database.types";
 import { useQuery } from "@tanstack/react-query";
 import { createClient } from "@/modules/core/lib/supabase/client";
 import { toast } from "sonner";
-import { ProductDataTable } from "./datatable";
+import { ProfileDataTable } from "./datatable";
 
-const fetchGroups = async (): Promise<Tables<"product">[]> => {
+const fetchProfiles = async (): Promise<Tables<"profile">[]> => {
   const supabase = createClient();
   const { data, error } = await supabase
-    .from("product")
+    .from("profile")
     .select()
     .eq("state", 1);
   if (error) {
@@ -18,20 +18,20 @@ const fetchGroups = async (): Promise<Tables<"product">[]> => {
   return data;
 };
 
-export default function ProductList({
+export default function ProfileList({
   initialData,
 }: {
-  initialData: Tables<"product">[];
+  initialData: Tables<"profile">[];
 }) {
-  const { data: groups } = useQuery<Tables<"product">[]>({
-    queryKey: ["product"],
-    queryFn: fetchGroups,
+  const { data: groups } = useQuery<Tables<"profile">[]>({
+    queryKey: ["profile"],
+    queryFn: fetchProfiles,
     initialData: initialData,
   });
 
   return (
     <div className="px-6">
-      <ProductDataTable data={groups} />
+      <ProfileDataTable data={groups} />
     </div>
   );
 }

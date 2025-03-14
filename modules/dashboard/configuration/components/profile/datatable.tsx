@@ -31,7 +31,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Tables } from "@/modules/core/types/database.types";
-import { productColumns } from "./columns";
+import { profileColumns } from "./columns";
 
 const columnLabels: { [key: string]: string } = {
   name: "Nombre",
@@ -39,7 +39,7 @@ const columnLabels: { [key: string]: string } = {
   created_at: "Fecha de creación",
 };
 
-export function ProductDataTable({ data }: { data: Tables<"product">[] }) {
+export function ProfileDataTable({ data }: { data: Tables<"profile">[] }) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -48,7 +48,7 @@ export function ProductDataTable({ data }: { data: Tables<"product">[] }) {
 
   const table = useReactTable({
     data,
-    columns: productColumns,
+    columns: profileColumns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -143,7 +143,7 @@ export function ProductDataTable({ data }: { data: Tables<"product">[] }) {
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={productColumns.length}
+                  colSpan={profileColumns.length}
                   className="h-24 text-center"
                 >
                   No results.

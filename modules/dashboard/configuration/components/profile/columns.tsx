@@ -3,39 +3,69 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tables } from "@/modules/core/types/database.types";
-import DeleteConfirmationDialog from "../delete-confirmation-dialog";
-import ProductForm from "./form";
+import ProfileFormModal from "./form";
+import DeleteUserConfirmationDialog from "./delete-user";
 
-export const productColumns: ColumnDef<Tables<"product">>[] = [
+export const profileColumns: ColumnDef<Tables<"profile">>[] = [
   {
-    accessorKey: "name",
+    accessorKey: "last_name",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Nombre
+          Apellidos
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
-    cell: ({ row }) => <div className="ml-2">{row.getValue("name")}</div>,
+    cell: ({ row }) => <div className="ml-2">{row.getValue("last_name")}</div>,
   },
   {
-    accessorKey: "gmail",
+    accessorKey: "first_name",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Precio
+          Nombres
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
-    cell: ({ row }) => <div>{row.getValue("price")}</div>,
+    cell: ({ row }) => <div>{row.getValue("first_name")}</div>,
+  },
+  {
+    accessorKey: "email",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Correo
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <div>{row.getValue("email")}</div>,
+  },
+  {
+    accessorKey: "role",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Rol
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <div>{row.getValue("role")}</div>,
   },
   {
     accessorKey: "created_at",
@@ -72,12 +102,8 @@ export const productColumns: ColumnDef<Tables<"product">>[] = [
 
       return (
         <div className="flex items-center p-2 gap-2">
-          <ProductForm id={item.id} item={item} />
-          <DeleteConfirmationDialog
-            id={item.id}
-            tableName="product"
-            queryKey="product"
-          />
+          <ProfileFormModal id={item.id} item={item} />
+          <DeleteUserConfirmationDialog id={item.id} />
         </div>
       );
     },

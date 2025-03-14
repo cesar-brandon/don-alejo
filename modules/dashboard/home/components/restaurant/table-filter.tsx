@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
-import { TableStatus } from "../../types/table";
+import { TableStatus } from "../../config/table";
 
 interface TableFilterProps {
   selectedStatus: TableStatus | "all";
