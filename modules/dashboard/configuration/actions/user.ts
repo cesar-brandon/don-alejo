@@ -2,6 +2,32 @@
 
 import { supabase } from "@/modules/core/lib/supabase/admin";
 
+export async function createUserAction({
+  email,
+  password,
+  user_metadata,
+}: {
+  email: string;
+  password: string;
+  user_metadata: object;
+}) {
+  if (!email || !password) {
+    return { error: "Datos incompletos" };
+  }
+
+  const { error } = await supabase.auth.admin.createUser({
+    email,
+    password,
+    user_metadata,
+  });
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  return { message: "Usuario creado correctamente" };
+}
+
 export async function updateUserAction({
   id,
   email,

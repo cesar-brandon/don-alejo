@@ -51,7 +51,7 @@ import { useForm } from "react-hook-form";
 import { ProfileRequest, ProfileValidator } from "../../validators/profile";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Role, roles } from "../../config/role";
-import { updateUserAction } from "../../actions/user";
+import { createUserAction, updateUserAction } from "../../actions/user";
 
 export default function ProfileFormModal({
   id,
@@ -163,20 +163,32 @@ function ProfileForm({
 
       if (!item) {
         // 🔹 Crear usuario con metadata
-        const { error } = await supabase.auth.signUp({
+        // const { error } = await supabase.auth.signUp({
+        //   email: formData.email,
+        //   password: formData.password ?? "",
+        //   options: {
+        //     data: {
+        //       email: formData.email,
+        //       first_name: formData.first_name,
+        //       last_name: formData.last_name,
+        //       role: formData.role,
+        //       user_reg: session?.user?.id ?? "",
+        //     },
+        //   },
+        // });
+
+        const result = await createUserAction({
           email: formData.email,
           password: formData.password ?? "",
-          options: {
-            data: {
-              email: formData.email,
-              first_name: formData.first_name,
-              last_name: formData.last_name,
-              role: formData.role,
-              user_reg: session?.user?.id ?? "",
-            },
+          user_metadata: {
+            email: formData.email,
+            first_name: formData.first_name,
+            last_name: formData.last_name,
+            role: formData.role,
+            user_reg: session?.user?.id ?? "",
           },
         });
-        if (error) throw new Error(error.message);
+        if (result.error) throw new Error(result.error);
         return true;
       }
 
