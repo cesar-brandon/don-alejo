@@ -45,7 +45,7 @@ export const useGoogleLogin = () => {
         if (result?.message) {
           toast.success(result.message);
         }
-        redirect(result.redirectUrl);
+        redirect("/dashboard");
       },
       onEnd: (reference: string | number) => {
         toast.dismiss(reference);

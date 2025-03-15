@@ -4,14 +4,14 @@ import Link from "next/link";
 export default function HeroSection() {
   return (
     <section className="relative h-dvh flex items-center justify-center overflow-hidden">
-      <Image
-        src="/hero-background.jpg"
-        alt="Fondo de cocina chinchana"
-        layout="fill"
-        objectFit="cover"
-        quality={100}
-        priority
-      />
+      {/* <Image */}
+      {/*   src="/hero-background.jpg" */}
+      {/*   alt="Fondo de cocina chinchana" */}
+      {/*   layout="fill" */}
+      {/*   objectFit="cover" */}
+      {/*   quality={100} */}
+      {/*   priority */}
+      {/* /> */}
       <div className="absolute inset-0 bg-background bg-opacity-50" />
 
       <div className="relative z-10 text-center text-white px-4">

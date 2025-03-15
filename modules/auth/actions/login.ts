@@ -4,6 +4,7 @@ import { createClient } from "@/modules/core/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import { ActionState } from "../../core/types/action-state";
 import { toActionState } from "@/modules/core/lib/callbacks";
+import { redirect } from "next/navigation";
 
 export async function login(actionState: ActionState, formData: FormData) {
   const supabase = await createClient();
@@ -31,7 +32,7 @@ export async function googleLogin() {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: `${process.env.BASE_URL}/auth/callback`,
+      redirectTo: `${process.env.BASE_URL}/api/auth/callback`,
     },
   });
 
@@ -39,12 +40,11 @@ export async function googleLogin() {
     return toActionState("Error al iniciar sesión", "ERROR");
   }
 
-  revalidatePath("/dashboard", "layout");
-  return {
-    message: "Iniciaste sesión correctamente",
-    status: "SUCCESS",
-    redirectUrl: data.url,
-  };
+  if (data.url) {
+    revalidatePath("/dashboard", "layout");
+    redirect(data.url); // use the redirect API for your server framework
+  }
+  return toActionState("Iniciaste sesión correctamente", "SUCCESS");
 }
 
 export async function signup(actionState: ActionState, formData: FormData) {
