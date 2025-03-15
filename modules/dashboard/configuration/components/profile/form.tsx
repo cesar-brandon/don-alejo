@@ -157,10 +157,12 @@ function ProfileForm({
     }) => {
       const {
         data: { session },
+        error: sessionError,
       } = await supabase.auth.getSession();
+      if (sessionError) throw new Error("Error al obtener la sesión");
 
       if (!item) {
-        // Crear usuario con metadata
+        // 🔹 Crear usuario con metadata
         const { error } = await supabase.auth.signUp({
           email: formData.email,
           password: formData.password ?? "",
@@ -174,13 +176,13 @@ function ProfileForm({
             },
           },
         });
-        if (error) throw error;
+        if (error) throw new Error(error.message);
         return true;
       }
 
-      // 🔹 Actualizar metadata en Supabase
-      await supabase
-        .from("profile")
+      // 🔹 Actualizar `profiles`
+      const { error: profileError } = await supabase
+        .from("profile") // Corrección en el nombre de la tabla
         .update({
           email: formData.email ?? item.email,
           first_name: formData.first_name,
@@ -191,20 +193,28 @@ function ProfileForm({
         })
         .eq("id", item.id);
 
-      // 🔹 Si se quiere actualizar email o contraseña, llamar a la Server Action
-      if (formData.email || formData.password) {
-        const result = await updateUserAction({
-          id: item.id, // ID del usuario en `auth.users`
-          email: formData.email || undefined,
-          password: formData.password || undefined,
-        });
+      if (profileError) throw new Error(profileError.message);
 
-        if (result.error) throw new Error(result.error);
-      }
+      // 🔹 Actualizar `auth.users` solo si se cambia email o contraseña
+      const result = await updateUserAction({
+        id: item.id, // ID en `auth.users`
+        email: formData.email || undefined,
+        password: formData.password || undefined,
+        user_metadata: {
+          email: formData.email,
+          first_name: formData.first_name,
+          last_name: formData.last_name,
+          role: formData.role,
+        },
+      });
+
+      if (result.error) throw new Error(result.error);
+
+      await supabase.auth.refreshSession();
     },
     onError: (error) => {
       console.error(error);
-      toast.error("Error al guardar el usuario");
+      toast.error("Error al guardar el usuario: " + error.message);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["profile"] });

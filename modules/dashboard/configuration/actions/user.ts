@@ -6,10 +6,12 @@ export async function updateUserAction({
   id,
   email,
   password,
+  user_metadata,
 }: {
   id: string;
   email?: string;
   password?: string;
+  user_metadata: object;
 }) {
   if (!id || (!email && !password)) {
     return { error: "Datos incompletos" };
@@ -18,6 +20,7 @@ export async function updateUserAction({
   const { error } = await supabase.auth.admin.updateUserById(id, {
     email,
     password,
+    user_metadata: user_metadata,
   });
 
   if (error) {
