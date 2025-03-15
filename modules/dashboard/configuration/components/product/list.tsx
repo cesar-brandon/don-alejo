@@ -1,15 +1,20 @@
 "use client";
-import { Tables } from "@/modules/core/types/database.types";
 import { useQuery } from "@tanstack/react-query";
 import { createClient } from "@/modules/core/lib/supabase/client";
 import { toast } from "sonner";
 import { ProductDataTable } from "./datatable";
+import { ProductWithGroup } from "../../types/product";
 
-const fetchGroups = async (): Promise<Tables<"product">[]> => {
+const fetchGroups = async (): Promise<ProductWithGroup[]> => {
   const supabase = createClient();
   const { data, error } = await supabase
     .from("product")
-    .select()
+    .select(
+      `
+      *,
+      product_group(name)
+    `,
+    )
     .eq("state", 1);
   if (error) {
     toast.error("Error al cargar los grupos de productos");
@@ -21,9 +26,9 @@ const fetchGroups = async (): Promise<Tables<"product">[]> => {
 export default function ProductList({
   initialData,
 }: {
-  initialData: Tables<"product">[];
+  initialData: ProductWithGroup[];
 }) {
-  const { data: groups } = useQuery<Tables<"product">[]>({
+  const { data: groups } = useQuery<ProductWithGroup[]>({
     queryKey: ["product"],
     queryFn: fetchGroups,
     initialData: initialData,

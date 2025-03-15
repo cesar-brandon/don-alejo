@@ -7,7 +7,11 @@ import { ProfileDataTable } from "./datatable";
 
 const fetchProfiles = async (): Promise<Tables<"profile">[]> => {
   const supabase = createClient();
-  const { data, error } = await supabase.from("profile").select();
+  const { data, error } = await supabase
+    .from("profile")
+    .select()
+    .neq("role", "sadmin");
+
   if (error) {
     toast.error("Error al cargar los grupos de productos");
     return [];

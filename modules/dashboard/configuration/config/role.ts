@@ -1,4 +1,5 @@
 export enum Role {
+  SAdmin = "sadmin",
   Admin = "admin",
   Cajero = "cajero",
   Mesero = "mesero",
@@ -6,6 +7,11 @@ export enum Role {
 }
 
 export const roles = [
+  // {
+  //   value: Role.SAdmin,
+  //   label: "Super Administrador",
+  //   description: "Tiene acceso a todas las funcionalidades",
+  // },
   {
     value: Role.Admin,
     label: "Administrador",

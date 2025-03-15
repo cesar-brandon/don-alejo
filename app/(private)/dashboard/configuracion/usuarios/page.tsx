@@ -4,7 +4,10 @@ import ProfileList from "@/modules/dashboard/configuration/components/profile/li
 
 export default async function MenuPage() {
   const supabase = await createClient();
-  const { data: profiles, error } = await supabase.from("profile").select();
+  const { data: profiles, error } = await supabase
+    .from("profile")
+    .select()
+    .neq("role", "sadmin");
 
   if (error) {
     return (

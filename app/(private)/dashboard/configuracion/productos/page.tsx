@@ -6,7 +6,12 @@ export default async function MenuPage() {
   const supabase = await createClient();
   const { data: products, error } = await supabase
     .from("product")
-    .select()
+    .select(
+      `
+      *,
+      product_group(name)
+    `,
+    )
     .eq("state", 1);
 
   if (error) {

@@ -9,22 +9,22 @@ export const navData: NavData = {
       url: "/configuracion/menu",
       icon: Settings,
       isActive: true,
-      allowedRoles: [Role.Admin], // Solo los admins pueden ver esto
+      allowedRoles: [Role.SAdmin, Role.Admin], // Solo los admins pueden ver esto
       items: [
         {
           title: "Grupos",
           url: "/dashboard/configuracion/grupos",
-          allowedRoles: [Role.Admin],
+          allowedRoles: [Role.SAdmin, Role.Admin],
         },
         {
           title: "Productos",
           url: "/dashboard/configuracion/productos",
-          allowedRoles: [Role.Admin, Role.Cajero],
+          allowedRoles: [Role.SAdmin, Role.Admin, Role.Cajero],
         },
         {
           title: "Usuarios",
           url: "/dashboard/configuracion/usuarios",
-          allowedRoles: [Role.Admin],
+          allowedRoles: [Role.SAdmin, Role.Admin],
         },
       ],
     },
@@ -32,12 +32,12 @@ export const navData: NavData = {
       title: "Pedidos",
       url: "#",
       icon: HandPlatter,
-      allowedRoles: [Role.Admin, Role.Mesero],
+      allowedRoles: [Role.SAdmin, Role.Admin, Role.Mesero],
       items: [
         {
           title: "Gestión de Pedidos",
           url: "#",
-          allowedRoles: [Role.Admin, Role.Mesero],
+          allowedRoles: [Role.SAdmin, Role.Admin, Role.Mesero],
         },
       ],
     },
@@ -45,12 +45,12 @@ export const navData: NavData = {
       title: "Cocina",
       url: "#",
       icon: Utensils,
-      allowedRoles: [Role.Admin, Role.Cocinero],
+      allowedRoles: [Role.SAdmin, Role.Admin, Role.Cocinero],
       items: [
         {
           title: "Pedidos",
           url: "#",
-          allowedRoles: [Role.Admin, Role.Cocinero],
+          allowedRoles: [Role.SAdmin, Role.Admin, Role.Cocinero],
         },
       ],
     },

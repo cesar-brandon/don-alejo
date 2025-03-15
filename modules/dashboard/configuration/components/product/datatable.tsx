@@ -30,8 +30,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Tables } from "@/modules/core/types/database.types";
 import { productColumns } from "./columns";
+import { ProductWithGroup } from "../../types/product";
 
 const columnLabels: { [key: string]: string } = {
   name: "Nombre",
@@ -39,7 +39,7 @@ const columnLabels: { [key: string]: string } = {
   created_at: "Fecha de creación",
 };
 
-export function ProductDataTable({ data }: { data: Tables<"product">[] }) {
+export function ProductDataTable({ data }: { data: ProductWithGroup[] }) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});

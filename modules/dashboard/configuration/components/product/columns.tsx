@@ -2,11 +2,11 @@ import * as React from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Tables } from "@/modules/core/types/database.types";
 import DeleteConfirmationDialog from "../delete-confirmation-dialog";
 import ProductForm from "./form";
+import { ProductWithGroup } from "../../types/product";
 
-export const productColumns: ColumnDef<Tables<"product">>[] = [
+export const productColumns: ColumnDef<ProductWithGroup>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => {
@@ -35,10 +35,10 @@ export const productColumns: ColumnDef<Tables<"product">>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => <div>{row.getValue("price")}</div>,
+    cell: ({ row }) => <div>S/. {row.getValue("price")}</div>,
   },
   {
-    accessorKey: "id_product_group",
+    accessorKey: "product_group.name",
     header: ({ column }) => {
       return (
         <Button
@@ -50,7 +50,7 @@ export const productColumns: ColumnDef<Tables<"product">>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => <div>{row.getValue("id_product_group")}</div>,
+    cell: ({ row }) => <div>{row.original.product_group.name}</div>,
   },
   {
     accessorKey: "created_at",
