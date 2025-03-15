@@ -7,7 +7,6 @@ import { cn } from "@/modules/core/lib/utils";
 import { Eye, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useGoogleLogin, useLogin } from "../hook/useLogin";
-import { redirect } from "next/navigation";
 
 export function LoginForm({
   className,
@@ -19,16 +18,10 @@ export function LoginForm({
 
   const handleSubmit = async (formData: FormData) => {
     loginAction(formData);
-    if (!loginPending) {
-      redirect("/dashboard");
-    }
   };
 
   const handleGoogleLogin = async () => {
     googleLoginAction();
-    if (!googleLoginPending) {
-      redirect("/dashboard");
-    }
   };
 
   return (

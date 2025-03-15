@@ -3,6 +3,7 @@ import { withCallbacks } from "../../core/lib/callbacks";
 import { googleLogin, login } from "../actions/login";
 import { toast } from "sonner";
 import { ActionState } from "../../core/types/action-state";
+import { redirect } from "next/navigation";
 
 export const useLogin = () => {
   return useActionState(
@@ -19,6 +20,7 @@ export const useLogin = () => {
         if (result?.message) {
           toast.success(result.message);
         }
+        redirect("/dashboard");
       },
       onEnd: (reference: string | number) => {
         toast.dismiss(reference);
@@ -43,6 +45,7 @@ export const useGoogleLogin = () => {
         if (result?.message) {
           toast.success(result.message);
         }
+        redirect("/dashboard");
       },
       onEnd: (reference: string | number) => {
         toast.dismiss(reference);
