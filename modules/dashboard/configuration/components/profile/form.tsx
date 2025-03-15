@@ -162,21 +162,6 @@ function ProfileForm({
       if (sessionError) throw new Error("Error al obtener la sesión");
 
       if (!item) {
-        // 🔹 Crear usuario con metadata
-        // const { error } = await supabase.auth.signUp({
-        //   email: formData.email,
-        //   password: formData.password ?? "",
-        //   options: {
-        //     data: {
-        //       email: formData.email,
-        //       first_name: formData.first_name,
-        //       last_name: formData.last_name,
-        //       role: formData.role,
-        //       user_reg: session?.user?.id ?? "",
-        //     },
-        //   },
-        // });
-
         const result = await createUserAction({
           email: formData.email,
           password: formData.password ?? "",

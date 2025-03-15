@@ -33,6 +33,10 @@ export async function googleLogin() {
     provider: "google",
     options: {
       redirectTo: `${process.env.BASE_URL}/api/auth/callback`,
+      queryParams: {
+        access_type: "offline",
+        prompt: "consent",
+      },
     },
   });
 

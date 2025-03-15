@@ -19,6 +19,7 @@ export async function createUserAction({
     email,
     password,
     user_metadata,
+    email_confirm: true,
   });
 
   if (error) {
