@@ -6,11 +6,6 @@ export default async function ProductGroupPage() {
   const supabase = await createClient();
   const { data: groups, error } = await supabase.from("product_group").select();
 
-  if (error) {
-    console.log(error);
-    return <div>error al cargar las categorias</div>;
-  }
-
   return (
     <div className="h-full flex flex-1 flex-col space-y-8 p-8">
       <div className="sm:flex items-center justify-between space-y-2">
@@ -26,7 +21,11 @@ export default async function ProductGroupPage() {
           <ProductGroupForm />
         </div>
       </div>
-      <ProductGroupList initialData={groups} />
+      {error ? (
+        <div>error al cargar las categorias</div>
+      ) : (
+        <ProductGroupList initialData={groups} />
+      )}
     </div>
   );
 }

@@ -14,11 +14,6 @@ export default async function MenuPage() {
     )
     .eq("state", 1);
 
-  if (error) {
-    console.log(error);
-    return <div>error al cargar los productos</div>;
-  }
-
   return (
     <div className="h-full flex flex-1 flex-col space-y-8 p-8">
       <div className="sm:flex items-center justify-between space-y-2">
@@ -32,7 +27,11 @@ export default async function MenuPage() {
           <ProductForm />
         </div>
       </div>
-      <ProductList initialData={products} />
+      {error ? (
+        <div>error al cargar los productos</div>
+      ) : (
+        <ProductList initialData={products} />
+      )}
     </div>
   );
 }

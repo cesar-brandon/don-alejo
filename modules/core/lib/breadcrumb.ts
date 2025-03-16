@@ -1,4 +1,4 @@
-import { HandPlatter, Settings, Utensils } from "lucide-react";
+import { ChefHat, HandPlatter, Settings, Soup, Utensils } from "lucide-react";
 import { NavData, NavItem } from "../types/nav";
 import { Role } from "@/modules/dashboard/configuration/config/role";
 
@@ -12,19 +12,33 @@ export const navData: NavData = {
       allowedRoles: [Role.SAdmin, Role.Admin], // Solo los admins pueden ver esto
       items: [
         {
+          title: "Usuarios",
+          url: "/dashboard/configuracion/usuarios",
+          allowedRoles: [Role.SAdmin, Role.Admin],
+        },
+      ],
+    },
+    {
+      title: "Menú",
+      url: "/configuracion/menu",
+      icon: Soup,
+      isActive: true,
+      allowedRoles: [Role.SAdmin, Role.Admin], // Solo los admins pueden ver esto
+      items: [
+        {
           title: "Grupos",
-          url: "/dashboard/configuracion/grupos",
+          url: "/dashboard/menu/grupos",
           allowedRoles: [Role.SAdmin, Role.Admin],
         },
         {
           title: "Productos",
-          url: "/dashboard/configuracion/productos",
+          url: "/dashboard/menu/productos",
           allowedRoles: [Role.SAdmin, Role.Admin, Role.Cajero],
         },
         {
-          title: "Usuarios",
-          url: "/dashboard/configuracion/usuarios",
-          allowedRoles: [Role.SAdmin, Role.Admin],
+          title: "El menú de hoy",
+          url: "/dashboard/menu/menu-de-hoy",
+          allowedRoles: [Role.SAdmin, Role.Admin, Role.Cajero],
         },
       ],
     },
@@ -44,7 +58,7 @@ export const navData: NavData = {
     {
       title: "Cocina",
       url: "#",
-      icon: Utensils,
+      icon: ChefHat,
       allowedRoles: [Role.SAdmin, Role.Admin, Role.Cocinero],
       items: [
         {

@@ -27,7 +27,7 @@ export default async function RootLayout({
     redirect("/login");
   }
   return (
-    <SidebarProvider>
+    <SidebarProvider className="overflow-hidden">
       <AppSidebar />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2">
