@@ -1,7 +1,7 @@
 export default function ConfigurationPage() {
   return (
     <div>
-      <h1>ConfigurationPage</h1>
+      <h1>Configuracion</h1>
     </div>
   );
 }

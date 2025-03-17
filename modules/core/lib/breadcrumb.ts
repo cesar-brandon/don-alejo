@@ -44,12 +44,13 @@ export const navData: NavData = {
     },
     {
       title: "Pedidos",
-      url: "#",
+      url: "/dashboard/pedidos",
       icon: HandPlatter,
       allowedRoles: [Role.SAdmin, Role.Admin, Role.Mesero],
       items: [
         {
           title: "Gestión de Pedidos",
+          // url: "/dashboard/pedidos/gestion",
           url: "#",
           allowedRoles: [Role.SAdmin, Role.Admin, Role.Mesero],
         },
@@ -57,7 +58,7 @@ export const navData: NavData = {
     },
     {
       title: "Cocina",
-      url: "#",
+      url: "/dashboard/cocina",
       icon: ChefHat,
       allowedRoles: [Role.SAdmin, Role.Admin, Role.Cocinero],
       items: [
@@ -74,7 +75,7 @@ export const navData: NavData = {
 };
 
 export const generateRouteMap = (
-  navMain: NavItem[],
+  navMain: NavItem[]
 ): { [key: string]: string } => {
   const map: { [key: string]: string } = {};
   navMain.forEach((item: NavItem) => {

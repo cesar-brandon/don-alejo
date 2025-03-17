@@ -1,6 +1,12 @@
 import { createClient } from "@/modules/core/lib/supabase/server";
 import ProfileFormModal from "@/modules/dashboard/configuration/components/profile/form";
 import ProfileList from "@/modules/dashboard/configuration/components/profile/list";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Usuarios",
+  description: "Configuración de los usuarios",
+};
 
 export default async function MenuPage() {
   const supabase = await createClient();

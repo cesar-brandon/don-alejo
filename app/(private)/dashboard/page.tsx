@@ -10,7 +10,7 @@ import { TableShape, TableStatus } from "@/modules/dashboard/home/config/table";
 
 export default function Page() {
   const [selectedStatus, setSelectedStatus] = useState<TableStatus | "all">(
-    "all",
+    "all"
   );
 
   const [tables] = useState<TableData[]>([

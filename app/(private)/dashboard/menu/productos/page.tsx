@@ -1,6 +1,12 @@
 import ProductForm from "@/configuration/components/product/form";
 import ProductList from "@/configuration/components/product/list";
 import { createClient } from "@/modules/core/lib/supabase/server";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Grupos de productos",
+  description: "Configuración de los grupos de productos.",
+};
 
 export default async function MenuPage() {
   const supabase = await createClient();
@@ -10,7 +16,7 @@ export default async function MenuPage() {
       `
       *,
       product_group(name)
-    `,
+    `
     )
     .eq("state", 1);
 

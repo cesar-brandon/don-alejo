@@ -1,6 +1,12 @@
 import { createClient } from "@/modules/core/lib/supabase/server";
 import DailyMenuForm from "@/modules/dashboard/menu/components/daily-menu/form";
 import DailyMenuList from "@/modules/dashboard/menu/components/daily-menu/list";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Menú de Hoy",
+  description: "Configuración del menú de hoy",
+};
 
 export default async function MenuPage() {
   const supabase = await createClient();

@@ -1,6 +1,12 @@
 import ProductGroupForm from "@/configuration/components/product-group/form";
 import ProductGroupList from "@/configuration/components/product-group/list";
 import { createClient } from "@/modules/core/lib/supabase/server";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Grupos de productos",
+  description: "Configuración de los grupos de productos.",
+};
 
 export default async function ProductGroupPage() {
   const supabase = await createClient();
@@ -8,7 +14,7 @@ export default async function ProductGroupPage() {
   const { data: groups, error } = await supabase
     .from("product_group")
     .select("*, product_count:product(count)")
-    .eq("state", 1);  
+    .eq("state", 1);
 
   return (
     <div className="h-full flex flex-1 flex-col space-y-8 p-8">

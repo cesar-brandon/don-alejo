@@ -1,7 +1,13 @@
 import { LoginForm } from "@/modules/auth/components/login-form";
 import LogoIcon from "@/modules/core/components/icons/logo-icon";
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Iniciar sesión",
+  description: "Inicia sesión en Don Alejo para acceder a tu cuenta.",
+};
 
 export default async function LoginPage() {
   return (
