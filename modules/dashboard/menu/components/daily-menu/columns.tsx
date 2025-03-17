@@ -20,7 +20,15 @@ export const dailyMenuColumns: ColumnDef<Tables<"menu_day">>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => <div className="ml-2">{row.getValue("name")}</div>,
+    cell: ({ row }) => {
+      const date = new Date(row.getValue("created_at"));
+      const options: Intl.DateTimeFormatOptions = {
+        weekday: "long",
+      };
+      return (
+        <div className="ml-2">{`Menu del ${date.toLocaleDateString("es-PE", options)}`}</div>
+      );
+    },
   },
   {
     accessorKey: "created_at",

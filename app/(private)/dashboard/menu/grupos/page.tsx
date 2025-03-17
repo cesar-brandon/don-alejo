@@ -8,9 +8,7 @@ export default async function ProductGroupPage() {
   const { data: groups, error } = await supabase
     .from("product_group")
     .select("*, product_count:product(count)")
-    .eq("state", 1);
-
-  console.log(groups);
+    .eq("state", 1);  
 
   return (
     <div className="h-full flex flex-1 flex-col space-y-8 p-8">

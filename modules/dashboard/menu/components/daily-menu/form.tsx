@@ -23,7 +23,7 @@ import { Label } from "@/modules/core/components/ui/label";
 import { useMediaQuery } from "@/modules/core/hooks/use-media-query";
 import { Tables } from "@/modules/core/types/database.types";
 import { Pen, Plus } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Table,
   TableHeader,
@@ -39,6 +39,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createClient } from "@/modules/core/lib/supabase/client";
 import { toast } from "sonner";
 import { SelectedProduct } from "../../types/daily-menu";
+import { cn } from "@/modules/core/lib/utils";
 
 export default function DailyMenuCard({
   id,
@@ -110,7 +111,14 @@ export default function DailyMenuCard({
   );
 }
 
-type Product = Tables<"product">;
+type TodayProduct = {
+  product_id: string;
+  price: number;
+  stock: number;
+  product: {
+    name: string;
+  } | null;
+};
 
 export function MenuDayCard({
   className,
@@ -126,6 +134,33 @@ export function MenuDayCard({
   const [selectedProducts, setSelectedProducts] = useState<SelectedProduct[]>(
     []
   );
+
+  useEffect(() => {
+    if (item) {
+      (async () => {
+        const { data: todayProductData, error: productsError } = (await supabase
+          .from("menu_day_product")
+          .select("product_id, price, stock, product(name)")
+          .eq("menu_day_id", item.id)) as unknown as {
+          data: TodayProduct[];
+          error: Error;
+        };
+
+        if (productsError) {
+          toast.error("Error al obtener los productos del menú");
+          throw new Error(productsError.message);
+        }        
+        setSelectedProducts(
+          todayProductData.map((todayProduct) => ({
+            id: todayProduct.product_id,
+            name: todayProduct.product?.name ?? "Desconocido",
+            price: todayProduct.price,
+            stock: todayProduct.stock,
+          }))
+        );
+      })();
+    }
+  }, [item]);
 
   const { mutate } = useMutation({
     mutationFn: async () => {
@@ -149,7 +184,7 @@ export function MenuDayCard({
       }));
 
       const { error: productsError } = await supabase
-        .from("menu_day_products")
+        .from("menu_day_product")
         .insert(productsToInsert);
       if (productsError) {
         toast.error("Error al agregar los productos al menú");
@@ -166,7 +201,7 @@ export function MenuDayCard({
   });
 
   return (
-    <div className="space-y-4">
+    <div className={cn("space-y-4", className)}>
       <ProductSelector
         selectedProducts={selectedProducts}
         setSelectedProducts={setSelectedProducts}

@@ -31,8 +31,8 @@ export function ProductSelector({
   const [open, setOpen] = useState(false);
   // Estado para el producto pendiente de configurar (ingresar precio y stock)
   const [pendingProduct, setPendingProduct] = useState<Product | null>(null);
-  const [pendingPrice, setPendingPrice] = useState<string>("");
-  const [pendingStock, setPendingStock] = useState<string>("");
+  const [pendingPrice, setPendingPrice] = useState<number>(0);
+  const [pendingStock, setPendingStock] = useState<number>(1);
 
   const { data: products } = useQuery<Product[]>({
     queryKey: ["products"],
@@ -41,7 +41,6 @@ export function ProductSelector({
         .from("product")
         .select()
         .eq("id_product_group", "535c1151-4286-49db-8112-632280cc11ac");
-      console.log(data);
       if (error) {
         toast.error("Error al cargar los productos");
         throw new Error(error.message);
@@ -55,15 +54,15 @@ export function ProductSelector({
     const product = products?.find((p) => p.id === productId);
     if (product && !selectedProducts.some((p) => p.id === product.id)) {
       setPendingProduct(product);
-      setPendingPrice(String(product.price));
-      setPendingStock("");
+      setPendingPrice(product.price || 1);
+      setPendingStock(1);
     }
     setOpen(false);
   };
 
   // Se agrega el producto configurado a la lista de productos seleccionados
   const handleAddPendingProduct = () => {
-    if (pendingProduct && pendingPrice !== "" && pendingStock !== "") {
+    if (pendingProduct && pendingPrice !== 0 && pendingStock !== 0) {
       const newSelectedProduct: SelectedProduct = {
         id: pendingProduct.id,
         name: pendingProduct.name,
@@ -73,8 +72,8 @@ export function ProductSelector({
       setSelectedProducts((prev) => [...prev, newSelectedProduct]);
       // Se limpian los estados pendientes
       setPendingProduct(null);
-      setPendingPrice("");
-      setPendingStock("");
+      setPendingPrice(0);
+      setPendingStock(0);
     } else {
       toast.error("Por favor ingresa precio y stock.");
     }
@@ -82,16 +81,16 @@ export function ProductSelector({
 
   const handleCancelPendingProduct = () => {
     setPendingProduct(null);
-    setPendingPrice("");
-    setPendingStock("");
+    setPendingPrice(0);
+    setPendingStock(0);
   };
 
   return (
-    <div>
+    <div className="w-full">
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button variant="outline" className="w-full">
-            Selecciona un producto
+            {pendingProduct ? pendingProduct.name : "Selecciona un producto"}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-full p-0" align="start">
@@ -115,32 +114,36 @@ export function ProductSelector({
         </PopoverContent>
       </Popover>
       {pendingProduct && (
-        <div className="mt-2 space-y-2">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Precio
-            </label>
+        <div className="w-full mt-2 space-y-2">
+          <div className="grid w-full max-w-sm items-center gap-1.5">
+            <label>Precio</label>
             <Input
               type="number"
               value={pendingPrice}
-              onChange={(e) => setPendingPrice(e.target.value)}
+              onChange={(e) => setPendingPrice(parseFloat(e.target.value))}
               className="mt-1"
+              min={0}
             />
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Stock
-            </label>
+          <div className="grid w-full max-w-sm items-center gap-1.5">
+            <label>Stock</label>
             <Input
               type="number"
               value={pendingStock}
-              onChange={(e) => setPendingStock(e.target.value)}
+              onChange={(e) => setPendingStock(parseInt(e.target.value))}
               className="mt-1"
+              min={0}
             />
           </div>
-          <div className="flex space-x-2">
-            <Button onClick={handleAddPendingProduct}>Agregar Producto</Button>
-            <Button variant="ghost" onClick={handleCancelPendingProduct}>
+          <div className="w-full flex justify-between items-center gap-2 mt-6">
+            <Button className="flex-1" onClick={handleAddPendingProduct}>
+              Agregar Producto
+            </Button>
+            <Button
+              className="flex-1"
+              variant="ghost"
+              onClick={handleCancelPendingProduct}
+            >
               Cancelar
             </Button>
           </div>
