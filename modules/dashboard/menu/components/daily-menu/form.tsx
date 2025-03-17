@@ -40,6 +40,7 @@ import { createClient } from "@/modules/core/lib/supabase/client";
 import { toast } from "sonner";
 import { SelectedProduct } from "../../types/daily-menu";
 import { cn } from "@/modules/core/lib/utils";
+import { Skeleton } from "@/modules/core/components/ui/skeleton";
 
 export default function DailyMenuCard({
   id,
@@ -134,64 +135,133 @@ export function MenuDayCard({
   const [selectedProducts, setSelectedProducts] = useState<SelectedProduct[]>(
     []
   );
+  const [isPendingMenuDay, setIsPendingMenuDay] = useState(false);
 
   useEffect(() => {
     if (item) {
       (async () => {
-        const { data: todayProductData, error: productsError } = (await supabase
-          .from("menu_day_product")
-          .select("product_id, price, stock, product(name)")
-          .eq("menu_day_id", item.id)) as unknown as {
-          data: TodayProduct[];
-          error: Error;
-        };
+        setIsPendingMenuDay(true);
+        try {
+          const { data: todayProductData, error: productsError } =
+            (await supabase
+              .from("menu_day_product")
+              .select("product_id, price, stock, product(name)")
+              .eq("menu_day_id", item.id)) as unknown as {
+              data: TodayProduct[];
+              error: Error;
+            };
 
-        if (productsError) {
-          toast.error("Error al obtener los productos del menú");
-          throw new Error(productsError.message);
-        }        
-        setSelectedProducts(
-          todayProductData.map((todayProduct) => ({
-            id: todayProduct.product_id,
-            name: todayProduct.product?.name ?? "Desconocido",
-            price: todayProduct.price,
-            stock: todayProduct.stock,
-          }))
-        );
+          if (productsError) {
+            toast.error("Error al obtener los productos del menú");
+            throw new Error(productsError.message);
+          }
+          setSelectedProducts(
+            todayProductData.map((todayProduct) => ({
+              id: todayProduct.product_id,
+              name: todayProduct.product?.name ?? "Desconocido",
+              price: todayProduct.price,
+              stock: todayProduct.stock,
+            }))
+          );
+        } catch (error) {
+          console.error(error);
+        } finally {
+          setIsPendingMenuDay(false);
+        }
       })();
     }
   }, [item]);
 
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: async () => {
-      // 1. Insertar en "menu_day" sin datos (usa valores por defecto)
-      const { data: menuData, error: menuError } = await supabase
-        .from("menu_day")
-        .insert({})
-        .select();
-      if (menuError || !menuData || menuData.length === 0) {
-        toast.error("Error al crear el menú");
-        throw new Error(menuError?.message || "Error al crear el menú");
-      }
-      const menuDayId = menuData[0].id;
+      if (!item) {
+        // 🔹 Si no existe el menú, creamos uno nuevo e insertamos los productos.
+        const { data: menuData, error: menuError } = await supabase
+          .from("menu_day")
+          .insert({})
+          .select();
 
-      // 2. Preparar e insertar productos en "menu_day_products"
-      const productsToInsert = selectedProducts.map((product) => ({
+        if (menuError || !menuData || menuData.length === 0) {
+          toast.error("Error al crear el menú");
+          throw new Error(menuError?.message || "Error al crear el menú");
+        }
+
+        const menuDayId = menuData[0].id;
+
+        const productsToInsert = selectedProducts.map((product) => ({
+          menu_day_id: menuDayId,
+          product_id: product.id,
+          price: product.price,
+          stock: product.stock,
+        }));
+
+        const { error: productsError } = await supabase
+          .from("menu_day_product")
+          .insert(productsToInsert);
+
+        if (productsError) {
+          toast.error("Error al agregar productos al menú");
+          throw new Error(productsError.message);
+        }
+
+        return { menuDayId, products: productsToInsert };
+      }
+
+      // 🔹 Si el menú ya existe, actualizamos los productos.
+      const menuDayId = item.id;
+
+      // 1️⃣ Obtener productos actuales en "menu_day_product"
+      const { data: currentProducts, error: fetchError } = await supabase
+        .from("menu_day_product")
+        .select("product_id")
+        .eq("menu_day_id", menuDayId);
+
+      if (fetchError) {
+        toast.error("Error al obtener productos actuales");
+        throw new Error(fetchError.message);
+      }
+
+      const currentProductIds = new Set(
+        currentProducts.map((p) => p.product_id)
+      );
+      const selectedProductIds = new Set(selectedProducts.map((p) => p.id));
+
+      // 2️⃣ Eliminar productos que ya no están en la selección
+      const productsToDelete = [...currentProductIds].filter(
+        (id) => !selectedProductIds.has(id)
+      );
+
+      if (productsToDelete.length > 0) {
+        const { error: deleteError } = await supabase
+          .from("menu_day_product")
+          .delete()
+          .in("product_id", productsToDelete)
+          .eq("menu_day_id", menuDayId);
+
+        if (deleteError) {
+          toast.error("Error al eliminar productos");
+          throw new Error(deleteError.message);
+        }
+      }
+
+      // 3️⃣ Insertar o actualizar productos seleccionados
+      const productsToUpsert = selectedProducts.map((product) => ({
         menu_day_id: menuDayId,
         product_id: product.id,
-        price: product.price, // Se asume que 'product' tiene la propiedad 'price'
-        stock: product.stock, // Se asume que 'product' tiene la propiedad 'stock'
+        price: product.price,
+        stock: product.stock,
       }));
 
-      const { error: productsError } = await supabase
+      const { error: upsertError } = await supabase
         .from("menu_day_product")
-        .insert(productsToInsert);
-      if (productsError) {
-        toast.error("Error al agregar los productos al menú");
-        throw new Error(productsError.message);
+        .upsert(productsToUpsert, { onConflict: "menu_day_id, product_id" });
+
+      if (upsertError) {
+        toast.error("Error al actualizar productos");
+        throw new Error(upsertError.message);
       }
 
-      return { menuDayId, products: productsToInsert };
+      return { menuDayId, products: productsToUpsert };
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["menu_day"] });
@@ -209,7 +279,26 @@ export function MenuDayCard({
       <Separator />
       <div>
         <Label>Productos Seleccionados</Label>
-        {selectedProducts.length > 0 ? (
+        {isPendingMenuDay ? (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Nombre</TableHead>
+                <TableHead className="w-10">Acción</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              <TableRow>
+                <TableCell>
+                  <Skeleton className="h-10 w-full" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-10 w-10" />
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        ) : selectedProducts.length > 0 ? (
           <Table>
             <TableHeader>
               <TableRow>
@@ -244,7 +333,7 @@ export function MenuDayCard({
           </p>
         )}
       </div>
-      <Button onClick={() => mutate()} className="w-full">
+      <Button onClick={() => mutate()} className="w-full" isLoading={isPending}>
         {item ? "Guardar Cambios" : "Agregar Menú"}
       </Button>
     </div>
