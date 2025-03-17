@@ -1,6 +1,6 @@
-import ProductForm from "@/configuration/components/product/form";
-import ProductList from "@/configuration/components/product/list";
 import { createClient } from "@/modules/core/lib/supabase/server";
+import DailyMenuForm from "@/modules/dashboard/menu/components/daily-menu/form";
+import DailyMenuList from "@/modules/dashboard/menu/components/daily-menu/list";
 
 export default async function MenuPage() {
   const supabase = await createClient();
@@ -13,19 +13,17 @@ export default async function MenuPage() {
     <div className="h-full flex flex-1 flex-col space-y-8 p-8">
       <div className="sm:flex items-center justify-between space-y-2">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight">Productos</h2>
-          <p className="text-muted-foreground">
-            Configuración de los productos
-          </p>
+          <h2 className="text-2xl font-bold tracking-tight">Menú de Hoy</h2>
+          <p className="text-muted-foreground">Configuración del menú de hoy</p>
         </div>
         <div>
-          <ProductForm />
+          <DailyMenuForm />
         </div>
       </div>
       {error ? (
         <div>error al cargar los productos</div>
       ) : (
-        <ProductList initialData={products} />
+        <DailyMenuList initialData={products} />
       )}
     </div>
   );

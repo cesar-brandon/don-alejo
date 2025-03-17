@@ -4,7 +4,13 @@ import { createClient } from "@/modules/core/lib/supabase/server";
 
 export default async function ProductGroupPage() {
   const supabase = await createClient();
-  const { data: groups, error } = await supabase.from("product_group").select();
+
+  const { data: groups, error } = await supabase
+    .from("product_group")
+    .select("*, product_count:product(count)")
+    .eq("state", 1);
+
+  console.log(groups);
 
   return (
     <div className="h-full flex flex-1 flex-col space-y-8 p-8">
@@ -22,7 +28,7 @@ export default async function ProductGroupPage() {
         </div>
       </div>
       {error ? (
-        <div>error al cargar las categorias</div>
+        <div>Error al cargar los grupos de productos</div>
       ) : (
         <ProductGroupList initialData={groups} />
       )}

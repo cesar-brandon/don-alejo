@@ -12,16 +12,6 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ChevronDown } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -30,20 +20,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { productGroupColumns } from "./columns";
-import { ProductGroupWithCount } from "../../types/product-group";
+import { dailyMenuColumns } from "./columns";
+import { DataTablePagination } from "@/modules/core/components/table/data-table-pagination";
+import { DataTableToolbar } from "./datatable-toolbar";
+import { Tables } from "@/modules/core/types/database.types";
 
-const columnLabels: { [key: string]: string } = {
-  name: "Nombre",
-  description: "Descripción",
-  created_at: "Fecha de creación",
-};
-
-export function ProductGroupDataTable({
-  data,
-}: {
-  data: ProductGroupWithCount[];
-}) {
+export function DailyMenuDataTable({ data }: { data: Tables<"menu_day">[] }) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -52,7 +34,7 @@ export function ProductGroupDataTable({
 
   const table = useReactTable({
     data,
-    columns: productGroupColumns,
+    columns: dailyMenuColumns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -72,41 +54,12 @@ export function ProductGroupDataTable({
   });
 
   return (
-    <div className="w-full">
-      <div className="flex items-center py-4">
-        <Input
-          placeholder="Buscar por palabra clave"
-          value={globalFilter ?? ""}
-          onChange={(event) => setGlobalFilter(event.currentTarget.value ?? "")}
-          className="max-w-sm py-6"
-        />
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Columnas <ChevronDown className="ml-2 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {columnLabels[column.id] ?? column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
+    <div className="space-y-4">
+      <DataTableToolbar
+        table={table}
+        globalFilter={globalFilter}
+        setGlobalFilter={setGlobalFilter}
+      />
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -147,39 +100,18 @@ export function ProductGroupDataTable({
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={productGroupColumns.length}
+                  colSpan={dailyMenuColumns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  Sin resultados.
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredRowModel().rows.length} filas cargadas
-        </div>
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Anterior
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Siguiente
-          </Button>
-        </div>
-      </div>
+
+      <DataTablePagination table={table} />
     </div>
   );
 }

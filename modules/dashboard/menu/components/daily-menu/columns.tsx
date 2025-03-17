@@ -2,11 +2,11 @@ import * as React from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import ProductGroupForm from "./form";
-import DeleteConfirmationDialog from "../delete-confirmation-dialog";
-import { ProductGroupWithCount } from "../../types/product-group";
+import { Tables } from "@/modules/core/types/database.types";
+import DailyMenuForm from "./form";
+import DeleteConfirmationDialog from "@/modules/dashboard/configuration/components/delete-confirmation-dialog";
 
-export const productGroupColumns: ColumnDef<ProductGroupWithCount>[] = [
+export const dailyMenuColumns: ColumnDef<Tables<"menu_day">>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => {
@@ -21,21 +21,6 @@ export const productGroupColumns: ColumnDef<ProductGroupWithCount>[] = [
       );
     },
     cell: ({ row }) => <div className="ml-2">{row.getValue("name")}</div>,
-  },
-  {
-    accessorKey: "description",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Descripción
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => <div>{row.getValue("description")}</div>,
   },
   {
     accessorKey: "created_at",
@@ -72,14 +57,12 @@ export const productGroupColumns: ColumnDef<ProductGroupWithCount>[] = [
 
       return (
         <div className="flex items-center p-2 gap-2">
-          <ProductGroupForm id={item.id} item={item} />
-          {item.product_count[0].count === 0 ? (
-            <DeleteConfirmationDialog
-              id={item.id}
-              tableName="product_group"
-              queryKey="product_group"
-            />
-          ) : null}
+          <DailyMenuForm id={item.id} item={item} />
+          <DeleteConfirmationDialog
+            id={item.id}
+            tableName="menu_day"
+            queryKey="menu_day"
+          />
         </div>
       );
     },
